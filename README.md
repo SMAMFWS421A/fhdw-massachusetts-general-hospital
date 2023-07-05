@@ -1,6 +1,6 @@
-# massachusetts-general-hospital
+# fhdw-massachusetts-general-hospital
 
-Hier stehen alle wichtigen Informationen zum massachusetts-general-hospital Projekt
+Ein Demo Projekt zur Entwicklung eines Krankenhaus Management Systems
 
 
 ## Eingesetzte Technologien
@@ -13,7 +13,8 @@ Datenbank: MySQL
 
 ## Vorgaben
 Vorgaben für git:
-- Jeder arbeitet in einem eigenen Branch und mergt auf dev wenn fertig
+- Entwicklung in Feature Branches
+- Mergen auf dev
 - Direktes Pushen auf dev oder main ist nicht erlaubt
 
 Building und Deployment:
