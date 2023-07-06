@@ -17,6 +17,7 @@ Vorgaben für git:
 - Mergen auf dev
 - Direktes Pushen auf dev oder main ist nicht erlaubt
 
+
 Building und Deployment:
 - läuft über Docker
 - Code wird bei jedem lokal gebaut und deployt
