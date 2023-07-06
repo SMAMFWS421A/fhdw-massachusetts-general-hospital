@@ -2,25 +2,17 @@
 
 Ein Demo Projekt zur Entwicklung eines Krankenhaus Management Systems
 
+## Struktur der Repo
 
-## Eingesetzte Technologien
-Frontend: Vue 
+- /doku: Dokumentation
+- /hospital-fe: Vue Frontend
+- /hospital-be: Java Backend 
+- /deployment: Dateien und Skripte zum Builden und Deployen
 
-Backend: Java (Spring Boot)
-
-Datenbank: MySQL
 
 ## Dokumentation
-[UseCases](/doku/Index.md)
+1. [Technologieauswahl](/doku/Technologieauswahl.md)
+1. [Use Cases](/doku/UseCases.md)
+1. [Deployment](/doku/Deployment.md)
 
-## Vorgaben
-Vorgaben für git:
-- Entwicklung in Feature Branches
-- Mergen auf dev
-- Direktes Pushen auf dev oder main ist nicht erlaubt
-
-
-Building und Deployment:
-- läuft über Docker
-- Code wird bei jedem lokal gebaut und deployt
 
