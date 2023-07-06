@@ -11,7 +11,7 @@ Backend: Java (Spring Boot)
 Datenbank: MySQL
 
 ## Dokumentation
-[UseCases](/doku/UseCases/Index.md)
+[UseCases](/doku/Index.md)
 
 ## Vorgaben
 Vorgaben für git:
