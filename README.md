@@ -1,18 +1,22 @@
-# fhdw-massachusetts-general-hospital
+# massachusetts-general-hospital
 
-Ein Demo Projekt zur Entwicklung eines Krankenhaus Management Systems
-
-## Struktur der Repo
-
-- /doku: Dokumentation
-- /hospital-fe: Vue Frontend
-- /hospital-be: Java Backend 
-- /deployment: Dateien und Skripte zum Builden und Deployen
+Hier stehen alle wichtigen Informationen zum massachusetts-general-hospital Projekt
 
 
-## Dokumentation
-1. [Technologieauswahl](/doku/Technologieauswahl.md)
-1. [Use Cases](/doku/UseCases.md)
-1. [Deployment](/doku/Deployment.md)
+## Eingesetzte Technologien
+Frontend: Vue 
 
+Backend: Java (Spring Boot)
+
+Datenbank: MySQL
+
+
+## Vorgaben
+Vorgaben für git:
+- Jeder arbeitet in einem eigenen Branch und mergt auf dev wenn fertig
+- Direktes Pushen auf dev oder main ist nicht erlaubt
+
+Building und Deployment:
+- läuft über Docker
+- Code wird bei jedem lokal gebaut und deployt
 
