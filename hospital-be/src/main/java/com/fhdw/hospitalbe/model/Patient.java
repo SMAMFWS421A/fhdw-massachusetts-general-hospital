@@ -42,6 +42,11 @@ public class Patient {
     @Column(name = "city")
     String city;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    @PrimaryKeyJoinColumn
+    PatientRecord patientRecord;
+
     //@OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
     //private List<Appointment> appointmentList;
 
