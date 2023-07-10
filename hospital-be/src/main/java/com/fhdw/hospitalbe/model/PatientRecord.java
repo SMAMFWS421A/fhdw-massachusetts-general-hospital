@@ -17,6 +17,11 @@ public class PatientRecord {
     @Column(name = "id", nullable = false)
     Long id;
 
+    @MapsId
+    @OneToOne(mappedBy = "patientRecord")
+    @JoinColumn(name = "id")
+    private Patient patient;
+
     @Column(name = "medication")
     String medication;
 

@@ -1,7 +1,9 @@
 package com.fhdw.hospitalbe.model;
 
 
+import com.fhdw.hospitalbe.model.enums.Area;
 import com.fhdw.hospitalbe.model.enums.Gender;
+import com.fhdw.hospitalbe.model.enums.Position;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,4 +30,9 @@ public class Doctor {
     @Column(name = "gender")
     Gender gender;
 
+    @Column(name = "position")
+    Position position;
+
+    @Column(name = "area")
+    Area area;
 }
