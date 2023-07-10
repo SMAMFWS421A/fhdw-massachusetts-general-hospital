@@ -20,7 +20,7 @@ public class PatientRecord {
     @MapsId
     @OneToOne(mappedBy = "patientRecord")
     @JoinColumn(name = "id")
-    private Patient patient;
+    Patient patient;
 
     @Column(name = "medication")
     String medication;

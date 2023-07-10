@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -17,9 +20,20 @@ public class Visit {
     @Column(name = "id", nullable = false)
     Long id;
 
-    @OneToOne
-    @JoinColumn(name = "appointment_id")
-    Appointment appointment;
+    @ManyToOne
+    @JoinColumn(name = "patient_id",nullable = false)
+    PatientRecord patientRecord;
+
+    @Column(name = "appeal")
+    String appeal;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "visiting_time")
+    LocalDate plannedTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "arrived_time")
+    LocalDate arrivedTime;
 
     @Column(name = "anamnesis")
     String anamnesis;
@@ -32,5 +46,4 @@ public class Visit {
 
     @Column(name = "plan_of_actions")
     String planOfActions;
-
 }

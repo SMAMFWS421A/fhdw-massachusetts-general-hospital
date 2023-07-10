@@ -22,7 +22,7 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "patient_id",nullable = false)
-    Patient patient;
+    PatientRecord patientRecord;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
