@@ -23,7 +23,7 @@ public class VisitController {
     }
 
     @PostMapping
-    public ResponseEntity<Visit> createVisit(Visit visit) {
+    public ResponseEntity<Visit> createVisit(@RequestBody Visit visit) {
         return new ResponseEntity<Visit>(visitService.createVisit(visit), HttpStatus.CREATED);
     }
 

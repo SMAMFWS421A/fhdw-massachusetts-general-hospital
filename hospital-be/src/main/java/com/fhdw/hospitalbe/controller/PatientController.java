@@ -23,7 +23,7 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<Patient> createPatient(Patient patient) {
+    public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
         return new ResponseEntity<Patient>(patientService.createPatient(patient), HttpStatus.CREATED);
     }
 
