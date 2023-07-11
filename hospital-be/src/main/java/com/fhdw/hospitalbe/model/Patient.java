@@ -2,6 +2,7 @@ package com.fhdw.hospitalbe.model;
 
 import com.fhdw.hospitalbe.model.enums.Gender;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,7 @@ public class Patient {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "birthday")
-    Date birthday;
+    LocalDate birthday;
 
     @Column(name = "is_privat")
     Boolean isPrivate;
