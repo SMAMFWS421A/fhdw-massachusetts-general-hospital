@@ -3,25 +3,68 @@
   <div class="app-container" :style="backgroundImageStyle">
 
     <header class="header">
-
-        <div class="title-container">
-          <h1 class="header-title"> Massachusetts-General-Hospital</h1>
-          <h2 class="header-subtitle"> zusammen gutes bewirken</h2>
+        <div class="first-element">
+          <div class="header-title"> Massachusetts-General-Hospital</div>
         </div>
 
-        <div class="time-container">
-          <p class="current-time">{{currentTime}}</p>
-          <p class="current-date">{{currentDate}}</p>
-        </div>
+        <div class="second-element">
+          <div class="current-time">{{currentTime}}</div>
+          </div>
+
+         <div class="third-element">
+           <div class="header-subtitle"> zusammen gutes bewirken</div>
+          </div>
+
+          <div class="fourth-element">
+           <div class="current-date">{{currentDate}}</div>
+          </div>
     </header>
 
 
+
+
+
   <div class="home-view">
-    <h1>Test</h1>
+
+    <div class="first-element-mid">
+       <div class="first-paragraph"> "Nur wer das Ziel kennt, findet den Weg." Laotse</div>
+    </div>
+
+    <div class="second-element-mid">
+      <div class="second-paragraph"> "Erfolg besteht aus drei Buchstaben: TUN." Johann Wolfgang von Goethe</div>
+    </div>
+
+    <div class="third-element-mid">
+      <div class="third-paragraph"> "Das Schönste an Teamarbeit ist, dass du immer andere an deiner Seite hast." Margaret Carty</div>
+    </div>
+
+    <div class="fourth-element-mid">
+      <button class="first-button" @click="handleClick">Klick mich!</button>
+    </div>
+
+    <div class="fifth-element-mid">
+      <button class="second-button" @click="handleClick">Klick mich!</button>
+    </div>
+
+    <div class="sixth-element-mid">
+      <button class="third-button" @click="handleClick">Klick mich!</button>
+    </div>
+
+
+
   </div>
 
+
+
+
+
+
+
+
+
+
     <div class="footer">
-      <h1>zrgrr</h1>
+
     </div>
 
   </div>
@@ -78,6 +121,10 @@ export default {
       return num.toString().padStart(2, "0");
     },
 
+    handleClick(){
+      console.log("Button wurde geklickt");
+    }
+
   },
 
 };
@@ -106,28 +153,33 @@ export default {
   background-color: rgba(255,255,255,0.5);
 }
 
-.header{
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  justify-content: space-between;
-  height: 120px;
-  z-index: 1;
-  position: relative;
+
+.first-element{
+ left: 40%;
+  top: 40px;
+position: absolute;
+  width: 500px;
 }
 
-.title-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.second-element{
+  position: absolute;
+  top: 40px;
+  left: 100px;
+  width: 500px;
 }
 
+.third-element{
+  position: absolute;
+  top: 70px;
+  left: 45%;
+  width: 500px;
+}
 
-.time-container{
-  justify-self: start;
-  display: flex;
-  flex-direction: column;
-  align-self: center;
+.fourth-element{
+  position: absolute;
+  top: 70px;
+  left: 100px;
+  width: 500px;
 }
 
 
@@ -137,7 +189,6 @@ export default {
   font-weight: bold;
   z-index: 1;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  margin: 0;
 }
 
 .current-date{
@@ -145,7 +196,7 @@ export default {
   font-family: sans-serif;
   z-index: 1;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  margin: 0;
+
 }
 
 .header-subtitle{
@@ -153,7 +204,7 @@ export default {
   font-family: sans-serif;
   z-index: 1;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  margin: 0;
+
 }
 
 .header-title{
@@ -162,13 +213,90 @@ export default {
   font-weight: bold;
   z-index: 1;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  margin: 0;
 }
 
 
-.home-view{
+
+
+.first-element-mid {
+  position: absolute;
+  top: 140px;
+  left: 925px;
+  width: 350px;
+}
+
+.second-element-mid{
+  position: absolute;
+  top: 300px;
+  left: 1100px;
+  width: 400px;
+}
+
+.third-element-mid{
+  position: absolute;
+  top: 580px;
+  left: 700px;
+  width: 700px;
+}
+
+.first-paragraph{
+  font-size: 18px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.second-paragraph{
+  font-size: 18px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.third-paragraph{
+  font-size: 18px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.fourth-element-mid{
+  position: absolute;
+  top: 180px;
+  left: 180px;
+  width: 700px;
+}
+
+.fifth-element-mid{
+  position: absolute;
+  top: 365px;
+  left: 400px;
+  width: 700px;
+}
+
+.sixth-element-mid{
+  position: absolute;
+  top: 550px;
+  left: 180px;
+  width: 700px;
+}
+
+.first-button{
 
 }
+
+.second-button{
+
+}
+
+.third-button{
+
+}
+
+
+
+
+
+
+
+
 
 .footer{
 
