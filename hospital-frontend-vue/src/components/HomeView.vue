@@ -50,8 +50,6 @@
       <button class="third-button" @click="handleClick">Klick mich!</button>
     </div>
 
-
-
   </div>
 
 
@@ -65,7 +63,29 @@
 
     <div class="footer">
 
+      <div class="first-element-low">
+        <button class="first-button-low">Impressum</button>
+      </div>
+
+      <div class="second-element-low">
+        <button class="second-button-low">Datenschutz</button>
+      </div>
+
+      <div class="third-element-low">
+        <div class="first-paragraph-low">
+          @Massachusetts-General-Hospital</div>
+      </div>
+
+      <div class="fourth-element-low">
+        <div class="second-paragraph-low">
+          40822 Mettmann
+          Marie-Curie-Straße 6
+          02104 1775602
+        </div>
+      </div>
+
     </div>
+
 
   </div>
 </template>
@@ -164,7 +184,7 @@ position: absolute;
 .second-element{
   position: absolute;
   top: 40px;
-  left: 100px;
+  left: 50px;
   width: 500px;
 }
 
@@ -178,7 +198,7 @@ position: absolute;
 .fourth-element{
   position: absolute;
   top: 70px;
-  left: 100px;
+  left: 50px;
   width: 500px;
 }
 
@@ -218,6 +238,7 @@ position: absolute;
 
 
 
+
 .first-element-mid {
   position: absolute;
   top: 140px;
@@ -243,18 +264,21 @@ position: absolute;
   font-size: 18px;
   font-family: sans-serif;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  position: absolute;
 }
 
 .second-paragraph{
   font-size: 18px;
   font-family: sans-serif;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  position: absolute;
 }
 
 .third-paragraph{
   font-size: 18px;
   font-family: sans-serif;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  position: absolute;
 }
 
 .fourth-element-mid{
@@ -278,16 +302,33 @@ position: absolute;
   width: 700px;
 }
 
-.first-button{
 
+
+.first-button{
+  font-size: 12px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .second-button{
-
+  font-size: 12px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .third-button{
-
+  font-size: 12px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 
@@ -298,8 +339,64 @@ position: absolute;
 
 
 
-.footer{
-
+.first-element-low{
+  position: absolute;
+  top: 680px;
+  left: 50px;
+  width: 700px;
 }
 
+.second-element-low{
+  position: absolute;
+  top: 700px;
+  left: 50px;
+  width: 700px;
+}
+
+.third-element-low{
+  position: absolute;
+  top: 680px;
+  left: 1280px;
+  width: 700px
+}
+
+.fourth-element-low{
+  position: absolute;
+  top: 700px;
+  left: 1280px;
+  width: 120px;
+}
+
+
+
+
+.first-button-low{
+  font-size: 12px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.second-button-low{
+  font-size: 12px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.first-paragraph-low{
+  font-size: 12px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.second-paragraph-low{
+  font-size: 12px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
 </style>
