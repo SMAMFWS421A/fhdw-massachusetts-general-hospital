@@ -2,12 +2,14 @@ package com.fhdw.hospitalbe.service;
 
 import com.fhdw.hospitalbe.model.Appointment;
 import com.fhdw.hospitalbe.model.Visit;
+import com.fhdw.hospitalbe.model.builder.AppointmentBuilder;
+import com.fhdw.hospitalbe.model.builder.VisitBuilder;
 import com.fhdw.hospitalbe.repository.VisitRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
 @Service
 public class VisitService {
@@ -47,10 +49,9 @@ public class VisitService {
         if (appointment == null) {
             return null;
         }
-        Visit visit =
-            new Visit(null, appointment.getPatientRecord(), appointment.getDoctor(), appointment.getAppeal(),
-                appointment.getVisitingTime(), LocalDateTime.now(), "",
-                "", "", "");
+        Visit visit = new VisitBuilder().patientRecord(appointment.getPatientRecord())
+                .doctor(appointment.getDoctor()).appeal(appointment.getAppeal()).plannedTime(appointment.getVisitingTime())
+                .arrivedTime(LocalDateTime.now()).build();
         appointmentService.deleteAppointment(appointmentId);
         return this.repository.save(visit);
     }
@@ -65,8 +66,8 @@ public class VisitService {
             return null;
         }
         this.deleteVisit(visitId);
-        Appointment appointment = new Appointment(null, visit.getPatientRecord(), visit.getDoctor(),
-            visit.getPlannedTime(), visit.getAppeal());
+        Appointment appointment = new AppointmentBuilder().patientRecord(visit.getPatientRecord())
+                .doctor(visit.getDoctor()).appeal(visit.getAppeal()).visitingTime(visit.getPlannedTime()).build();
         return appointmentService.createAppointment(appointment);
     }
 

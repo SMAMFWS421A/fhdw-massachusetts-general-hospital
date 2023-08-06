@@ -1,19 +1,13 @@
 package com.fhdw.hospitalbe.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import java.util.Set;
+import com.fhdw.hospitalbe.model.builder.PatientRecordBuilder;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Getter
@@ -43,5 +37,14 @@ public class PatientRecord {
 
     @OneToMany(mappedBy = "patientRecord")
     Set<Visit> visits;
+
+    public PatientRecord(PatientRecordBuilder builder) {
+        this.id = builder.getId();
+        this.medication = builder.getMedication();
+        this.diseases = builder.getDiseases();
+        this.patient = builder.getPatient();
+        this.appointments = builder.getAppointments();
+        this.visits = builder.getVisits();
+    }
 
 }

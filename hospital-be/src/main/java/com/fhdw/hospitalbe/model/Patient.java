@@ -1,14 +1,14 @@
 package com.fhdw.hospitalbe.model;
 
+import com.fhdw.hospitalbe.model.builder.PatientBuilder;
 import com.fhdw.hospitalbe.model.enums.Gender;
 import jakarta.persistence.*;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -22,10 +22,10 @@ public class Patient {
     Long id;
 
     @Column(name = "first_name")
-    String first_name;
+    String firstName;
 
     @Column(name = "last_name")
-    String last_name;
+    String lastName;
 
     @Column(name = "gender")
     Gender gender;
@@ -51,5 +51,16 @@ public class Patient {
     //@OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
     //private List<Appointment> appointmentList;
 
+    public Patient(PatientBuilder patientBuilder) {
+        this.id = patientBuilder.getId();
+        this.firstName = patientBuilder.getFirstName();
+        this.lastName = patientBuilder.getLastName();
+        this.gender = patientBuilder.getGender();
+        this.birthday = patientBuilder.getBirthday();
+        this.isPrivate = patientBuilder.getIsPrivate();
+        this.phoneNumber = patientBuilder.getPhoneNumber();
+        this.city = patientBuilder.getCity();
+        this.patientRecord = patientBuilder.getPatientRecord();
+    }
 
 }
