@@ -39,15 +39,38 @@
     </div>
 
     <div class="fourth-element-mid">
-      <button class="first-button" @click="handleClick">Klick mich!</button>
+      <a href="/Patienten" target="_blank">
+      <button class="first-button">
+        <span class="material-symbols-outlined"> cardiology</span>
+      </button>
+      </a>
     </div>
 
     <div class="fifth-element-mid">
-      <button class="second-button" @click="handleClick">Klick mich!</button>
+      <a href="/Termine" target="_blank">
+      <button class="second-button" @click="handleClick">
+        <span class="material-symbols-outlined"> event</span>
+      </button>
+      </a>
     </div>
 
     <div class="sixth-element-mid">
-      <button class="third-button" @click="handleClick">Klick mich!</button>
+      <a href="/Aerzte" target="_blank">
+      <button class="third-button" @click="handleClick">
+        <span class="material-symbols-outlined"> medical_services</span>
+      </button>
+      </a>
+    </div>
+
+
+    <div class="seventh-element-mid">
+      <div class="fourth-paragraph"> Patienten</div>
+    </div>
+    <div class="eighth-element-mid">
+      <div class="fifth-paragraph"> Termine</div>
+    </div>
+    <div class="ninth-element-mid">
+      <div class="sixth-paragraph"> Ärzteteam</div>
     </div>
 
   </div>
@@ -93,6 +116,8 @@
 
 
 <script>
+
+
 export default {
   data() {
     return {
@@ -141,9 +166,7 @@ export default {
       return num.toString().padStart(2, "0");
     },
 
-    handleClick(){
-      console.log("Button wurde geklickt");
-    }
+
 
   },
 
@@ -209,6 +232,7 @@ position: absolute;
   font-weight: bold;
   z-index: 1;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  color: darkslategray;
 }
 
 .current-date{
@@ -216,6 +240,7 @@ position: absolute;
   font-family: sans-serif;
   z-index: 1;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  color: darkslategray;
 
 }
 
@@ -224,7 +249,7 @@ position: absolute;
   font-family: sans-serif;
   z-index: 1;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-
+  color: darkslategray;
 }
 
 .header-title{
@@ -233,6 +258,7 @@ position: absolute;
   font-weight: bold;
   z-index: 1;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  color: darkslategray;
 }
 
 
@@ -263,22 +289,25 @@ position: absolute;
 .first-paragraph{
   font-size: 18px;
   font-family: sans-serif;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 2px 2px 4px rgba(0,0,0,1);
   position: absolute;
+  color: aliceblue;
 }
 
 .second-paragraph{
   font-size: 18px;
   font-family: sans-serif;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 2px 2px 4px rgba(0,0,0,1);
   position: absolute;
+  color: aliceblue;
 }
 
 .third-paragraph{
   font-size: 18px;
   font-family: sans-serif;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 2px 2px 4px rgba(0,0,0,1);
   position: absolute;
+  color: aliceblue;
 }
 
 .fourth-element-mid{
@@ -331,6 +360,68 @@ position: absolute;
   cursor: pointer;
 }
 
+.material-symbols-outlined{
+  font-size: 50px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: darkslategray;
+}
+
+
+
+.seventh-element-mid{
+  position: absolute;
+  top: 230px;
+  left: 175px;
+  width: 700px;
+}
+
+.eighth-element-mid{
+  position: absolute;
+  top: 415px;
+  left: 398px;
+  width: 700px;
+}
+
+.ninth-element-mid{
+  position: absolute;
+  top: 600px;
+  left: 170px;
+  width: 700px;
+}
+
+.fourth-paragraph{
+  font-size: 18px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  position: absolute;
+  color: darkslategray;
+}
+
+.fifth-paragraph{
+  font-size: 18px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  position: absolute;
+  color: darkslategray;
+}
+
+.sixth-paragraph{
+  font-size: 18px;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  position: absolute;
+  color: darkslategray;
+}
+
+
+
+
+
+
+
 
 
 
@@ -377,6 +468,7 @@ position: absolute;
   background: none;
   border: none;
   cursor: pointer;
+  color: darkslategray;
 }
 
 .second-button-low{
@@ -386,17 +478,21 @@ position: absolute;
   background: none;
   border: none;
   cursor: pointer;
+  color: darkslategray;
 }
 
 .first-paragraph-low{
   font-size: 12px;
   font-family: sans-serif;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  color: darkslategray;
 }
 
 .second-paragraph-low{
   font-size: 12px;
   font-family: sans-serif;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  color: darkslategray;
 }
+
 </style>

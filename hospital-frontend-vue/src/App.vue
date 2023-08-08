@@ -1,9 +1,3 @@
-<template>
-<HomeView></HomeView>
-  <PatientenListe></PatientenListe>
-  <TerminPlan></TerminPlan>
-  <AerzteTeam></AerzteTeam>
-</template>
 
 <script>
 
@@ -21,6 +15,11 @@ export default {
   }
 }
 </script>
+
+<template>
+  <router-view>
+  </router-view>
+</template>
 
 <style>
 
