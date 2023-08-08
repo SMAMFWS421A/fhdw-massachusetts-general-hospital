@@ -3,6 +3,8 @@ import HomeView from "@/components/HomeView.vue";
 import PatientenListe from "@/components/PatientenListe.vue";
 import TerminPlan from "@/components/TerminPlan.vue";
 import AerzteTeam from "@/components/AerzteTeam.vue";
+import ImpressumSeite from "@/components/ImpressumSeite.vue";
+import DatenschutzSeite from "@/components/DatenschutzSeite.vue";
 
 
 const routes = [
@@ -21,7 +23,15 @@ const routes = [
     {
         path: '/Aerzte',
         component: AerzteTeam
+    },
+    {
+        path: '/Impressum',
+        component: ImpressumSeite
+    },
 
+    {
+        path: '/Datenschutz',
+        component: DatenschutzSeite
     },
 ];
 

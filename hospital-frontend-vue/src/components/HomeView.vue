@@ -48,7 +48,7 @@
 
     <div class="fifth-element-mid">
       <a href="/Termine" target="_blank">
-      <button class="second-button" @click="handleClick">
+      <button class="second-button">
         <span class="material-symbols-outlined"> event</span>
       </button>
       </a>
@@ -56,7 +56,7 @@
 
     <div class="sixth-element-mid">
       <a href="/Aerzte" target="_blank">
-      <button class="third-button" @click="handleClick">
+      <button class="third-button">
         <span class="material-symbols-outlined"> medical_services</span>
       </button>
       </a>
@@ -87,11 +87,15 @@
     <div class="footer">
 
       <div class="first-element-low">
+        <a href="/Impressum" target="_blank">
         <button class="first-button-low">Impressum</button>
+        </a>
       </div>
 
       <div class="second-element-low">
+        <a href="/Datenschutz" target="_blank">
         <button class="second-button-low">Datenschutz</button>
+        </a>
       </div>
 
       <div class="third-element-low">
@@ -184,6 +188,8 @@ export default {
   height: 100vh;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .app-container::before{
@@ -193,14 +199,14 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255,255,255,0.5);
+  background-color: rgba(255,255,255,0.2);
 }
 
 
 .first-element{
  left: 40%;
   top: 40px;
-position: absolute;
+  position: absolute;
   width: 500px;
 }
 
@@ -415,16 +421,6 @@ position: absolute;
   position: absolute;
   color: darkslategray;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
