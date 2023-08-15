@@ -1,20 +1,13 @@
 package com.fhdw.hospitalbe.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import com.fhdw.hospitalbe.model.builder.VisitBuilder;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -57,4 +50,17 @@ public class Visit {
 
     @Column(name = "plan_of_actions")
     String planOfActions;
+
+    public Visit(VisitBuilder builder) {
+        this.id = builder.getId();
+        this.patientRecord = builder.getPatientRecord();
+        this.doctor = builder.getDoctor();
+        this.appeal = builder.getAppeal();
+        this.plannedTime = builder.getPlannedTime();
+        this.arrivedTime = builder.getArrivedTime();
+        this.anamnesis = builder.getAnamnesis();
+        this.measurement = builder.getMeasurement();
+        this.diagnosis = builder.getDiagnosis();
+        this.planOfActions = builder.getPlanOfActions();
+    }
 }

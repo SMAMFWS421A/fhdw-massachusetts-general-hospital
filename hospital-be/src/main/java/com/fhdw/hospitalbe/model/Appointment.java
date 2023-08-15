@@ -1,21 +1,13 @@
 package com.fhdw.hospitalbe.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import com.fhdw.hospitalbe.model.builder.AppointmentBuilder;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -43,5 +35,13 @@ public class Appointment {
 
     @Column(name = "appeal")
     String appeal;
+
+    public Appointment(AppointmentBuilder builder) {
+        this.id = builder.getId();
+        this.patientRecord = builder.getPatientRecord();
+        this.doctor = builder.getDoctor();
+        this.visitingTime = builder.getVisitingTime();
+        this.appeal = builder.getAppeal();
+    }
 
 }
