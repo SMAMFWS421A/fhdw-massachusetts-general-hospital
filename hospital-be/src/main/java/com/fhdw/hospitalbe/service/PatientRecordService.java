@@ -1,5 +1,6 @@
 package com.fhdw.hospitalbe.service;
 
+import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.PatientRecord;
 import com.fhdw.hospitalbe.repository.PatientRecordRepository;
 import java.util.List;
@@ -37,5 +38,10 @@ public class PatientRecordService {
         if (id != null && this.repository.existsById(id)) this.repository.deleteById(id);
     }
 
-
+  public PatientRecord updatePatientRecord(PatientRecord patientRecord) {
+    if (patientRecord == null) {
+      return null;
+    }
+    return this.repository.save(patientRecord);
+  }
 }
