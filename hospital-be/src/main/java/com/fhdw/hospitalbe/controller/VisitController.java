@@ -1,5 +1,6 @@
 package com.fhdw.hospitalbe.controller;
 
+import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.Visit;
 import com.fhdw.hospitalbe.service.VisitService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -42,5 +43,10 @@ public class VisitController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
+    @PutMapping(path= "{visit_id}")
+    @ApiResponse(responseCode = "200", description = "Update Visit",
+            content = @Content(schema = @Schema(implementation = Visit.class)))
+    public ResponseEntity<Visit> updateVisit(@RequestBody Visit visit) {
+        return new ResponseEntity<Visit>(visitService.updateVisit(visit), HttpStatus.OK);
+    }
 }

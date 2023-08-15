@@ -36,5 +36,10 @@ public class DoctorService {
         if (id != null && this.repository.existsById(id)) this.repository.deleteById(id);
     }
 
-
+  public Doctor updateDoctor(Doctor doctor) {
+    if (doctor == null) {
+      return null;
+    }
+    return this.repository.save(doctor);
+  }
 }

@@ -1,6 +1,7 @@
 package com.fhdw.hospitalbe.service;
 
 import com.fhdw.hospitalbe.model.Appointment;
+import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.Visit;
 import com.fhdw.hospitalbe.repository.VisitRepository;
 import jakarta.transaction.Transactional;
@@ -76,5 +77,10 @@ public class VisitService {
         }
     }
 
-
+    public Visit updateVisit(Visit visit) {
+        if (visit == null) {
+            return null;
+        }
+        return this.repository.save(visit);
+    }
 }

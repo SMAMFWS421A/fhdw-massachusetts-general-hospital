@@ -42,5 +42,10 @@ public class DoctorController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
+    @PutMapping(path= "{doctor_id}")
+    @ApiResponse(responseCode = "200", description = "Update Doctor",
+            content = @Content(schema = @Schema(implementation = Doctor.class)))
+    public ResponseEntity<Doctor> updateDoctor(@RequestBody Doctor doctor) {
+        return new ResponseEntity<Doctor>(doctorService.updateDoctor(doctor), HttpStatus.OK);
+    }
 }

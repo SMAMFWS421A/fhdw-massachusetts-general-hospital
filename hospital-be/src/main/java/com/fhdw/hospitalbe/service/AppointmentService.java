@@ -1,6 +1,7 @@
 package com.fhdw.hospitalbe.service;
 
 import com.fhdw.hospitalbe.model.Appointment;
+import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.repository.AppointmentRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -36,4 +37,10 @@ public class AppointmentService {
         if (id != null && this.repository.existsById(id)) this.repository.deleteById(id);
     }
 
+  public Appointment updateAppointment(Appointment appointment) {
+    if (appointment == null) {
+      return null;
+    }
+    return this.repository.save(appointment);
+  }
 }

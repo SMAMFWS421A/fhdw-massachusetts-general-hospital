@@ -1,5 +1,6 @@
 package com.fhdw.hospitalbe.controller;
 
+import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.PatientRecord;
 import com.fhdw.hospitalbe.service.PatientRecordService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -42,5 +43,10 @@ public class PatientRecordController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
+    @PutMapping(path= "{patientRecord_id}")
+    @ApiResponse(responseCode = "200", description = "Update Patient_Record",
+            content = @Content(schema = @Schema(implementation = PatientRecord.class)))
+    public ResponseEntity<PatientRecord> updatePatientRecord(@RequestBody PatientRecord patientRecord) {
+        return new ResponseEntity<PatientRecord>(patientRecordService.updatePatientRecord(patientRecord), HttpStatus.OK);
+    }
 }
