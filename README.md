@@ -1,6 +1,6 @@
 # fhdw-massachusetts-general-hospital
 
-Ein Demo Projekt zur Entwicklung eines Krankenhaus Management Systems
+Ein Demo-Projekt zur Entwicklung eines Krankenhaus Management Systems
 
 ## Struktur der Repo
 
