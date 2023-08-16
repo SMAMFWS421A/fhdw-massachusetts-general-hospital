@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=jdirSeb375isnS72u4zAs402h4kFdx
+      - MYSQL_DATABASE=hospital_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=d1skfjeDSskfhF73dD4Ls586Dkj27s
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldb:/var/lib/mysql
+  backend:
+    image: hospital-be:latest
+    depends_on:
+      - mysqldb
+    build: ./hospital-be
+    restart: on-failure
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysqldb:
