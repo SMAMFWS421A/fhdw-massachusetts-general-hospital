@@ -48,9 +48,6 @@ public class Patient {
     @PrimaryKeyJoinColumn
     PatientRecord patientRecord;
 
-    //@OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
-    //private List<Appointment> appointmentList;
-
     public Patient(PatientBuilder patientBuilder) {
         this.id = patientBuilder.getId();
         this.firstName = patientBuilder.getFirstName();
