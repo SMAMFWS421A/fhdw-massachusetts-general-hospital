@@ -40,10 +40,10 @@ public class Doctor {
     Area area;
 
     //--------------------------------------
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     Set<Appointment> appointments;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     Set<Visit> visits;
 
     public Doctor(DoctorBuilder builder) {
