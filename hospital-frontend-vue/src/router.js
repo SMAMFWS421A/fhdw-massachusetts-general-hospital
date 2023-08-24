@@ -9,7 +9,7 @@ import DatenschutzSeite from "@/components/DatenschutzSeite.vue";
 
 const routes = [
     {
-        path: '/', // Pfad für die Startseite (HomeView)
+        path: '/',
         component: HomeView
     },
     {
@@ -28,11 +28,10 @@ const routes = [
         path: '/Impressum',
         component: ImpressumSeite
     },
-
     {
         path: '/Datenschutz',
         component: DatenschutzSeite
-    },
+    }
 ];
 
 const router = createRouter({
