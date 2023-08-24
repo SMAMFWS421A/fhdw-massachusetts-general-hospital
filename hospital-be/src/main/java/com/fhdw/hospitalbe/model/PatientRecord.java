@@ -1,5 +1,6 @@
 package com.fhdw.hospitalbe.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fhdw.hospitalbe.model.builder.PatientRecordBuilder;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,14 +29,15 @@ public class PatientRecord {
 
     //--------------------------------------
     @MapsId
+    @JsonBackReference //TODO remove
     @OneToOne(mappedBy = "patientRecord")
     @JoinColumn(name = "id")
     Patient patient;
 
-    @OneToMany(mappedBy = "patientRecord")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patientRecord")
     Set<Appointment> appointments;
 
-    @OneToMany(mappedBy = "patientRecord")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patientRecord")
     Set<Visit> visits;
 
     public PatientRecord(PatientRecordBuilder builder) {

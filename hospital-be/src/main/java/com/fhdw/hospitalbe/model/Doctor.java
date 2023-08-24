@@ -40,11 +40,21 @@ public class Doctor {
     Area area;
 
     //--------------------------------------
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     Set<Appointment> appointments;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
     Set<Visit> visits;
+
+    @PreRemove
+    private void preRemove() {
+        for (Appointment a : appointments) {
+            a.setDoctor(null);
+        }
+        for (Visit v : visits) {
+            v.setDoctor(null);
+        }
+    }
 
     public Doctor(DoctorBuilder builder) {
         this.id = builder.getId();
