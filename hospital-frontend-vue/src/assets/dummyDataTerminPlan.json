@@ -1,0 +1,28 @@
+{
+  "appointments": [
+    {
+      "id": 1,
+      "date": "2023-08-25",
+      "time": "20:15",
+      "description": "Ultraschall",
+      "doctorId": 1,
+      "patientId": 1
+    },
+    {
+      "id": 2,
+      "date": "2023-08-26",
+      "time": "16:30",
+      "description": "KrebsVorsorge",
+      "doctorId": 2,
+      "patientId": 2
+    }
+  ],
+  "doctors": [
+    { "id": 1, "name": "Dr. Marko Tizza" },
+    { "id": 2, "name": "Dr. Mika Freitag" }
+  ],
+  "patients": [
+    { "id": 1, "name": "Marcel Firley" },
+    { "id": 2, "name": "Lukas Hennrichs" }
+  ]
+}
