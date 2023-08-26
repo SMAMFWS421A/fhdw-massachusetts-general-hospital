@@ -27,9 +27,16 @@ public class PatientRecordTable {
     PatientTable patient;
 
     //--------------------------------------
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patientRecord")
+    @OneToMany(mappedBy = "patientRecord", cascade = CascadeType.REMOVE)
     Set<AppointmentTable> appointments;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patientRecord")
     Set<VisitTable> visits;
+
+    @PreRemove
+    private void preRemove() {
+        for (VisitTable v : visits) {
+            v.setPatientRecord(null);
+        }
+    }
 }

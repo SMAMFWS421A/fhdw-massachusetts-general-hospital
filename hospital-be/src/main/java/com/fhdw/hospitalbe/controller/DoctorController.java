@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "api/v1/doctor")
 public class DoctorController {
@@ -28,7 +30,16 @@ public class DoctorController {
     public ResponseEntity<Doctor> findDoctor(@PathVariable("doctor_id") long doctor_id) {
         Doctor docDb = doctorService.findDoctor(doctor_id);
         if (docDb == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<Doctor>(docDb, HttpStatus.OK);
+        return new ResponseEntity<>(docDb, HttpStatus.OK);
+    }
+
+    @GetMapping()
+    @ApiResponse(responseCode = "200", description = "Found Doctors",
+            content = @Content(schema = @Schema(implementation = List.class)))
+    public ResponseEntity<List<Doctor>> findAllDoctors() {
+        List<Doctor> doctors = doctorService.findAllDoctors();
+        if (doctors == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
     @PostMapping
@@ -37,7 +48,7 @@ public class DoctorController {
     public ResponseEntity<Doctor> hireDoctor(@RequestBody Doctor doctor) {
         Doctor docDb = doctorService.hireDoctor(doctor);
         if (docDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Doctor>(docDb, HttpStatus.CREATED);
+        return new ResponseEntity<>(docDb, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "{doctor_id}")
@@ -54,6 +65,6 @@ public class DoctorController {
     public ResponseEntity<Doctor> updateDoctor(@RequestBody Doctor doctor) {
         Doctor docDb = doctorService.updateDoctor(doctor);
         if (docDb == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<Doctor>(docDb, HttpStatus.OK);
+        return new ResponseEntity<>(docDb, HttpStatus.OK);
     }
 }

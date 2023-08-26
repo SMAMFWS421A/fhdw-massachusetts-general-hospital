@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Tag(name = "appointment")
 @RequestMapping(path = "api/v1/appointment")
@@ -28,7 +30,16 @@ public class AppointmentController {
     public ResponseEntity<Appointment> findAppointment(@PathVariable("appointment_id") long appointment_id) {
         Appointment appDb = appointmentService.findAppointment(appointment_id);
         if (appDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Appointment>(appDb, HttpStatus.OK);
+        return new ResponseEntity<>(appDb, HttpStatus.OK);
+    }
+
+    @GetMapping()
+    @ApiResponse(responseCode = "200", description = "Found Appointments",
+            content = @Content(schema = @Schema(implementation = List.class)))
+    public ResponseEntity<List<Appointment>> findAllAppointments() {
+        List<Appointment> appointments = appointmentService.findAllAppointments();
+        if (appointments == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
     @PostMapping
@@ -37,7 +48,7 @@ public class AppointmentController {
     public ResponseEntity<Appointment> arrangeAppointment(@RequestBody Appointment appointment) {
         Appointment appDb = appointmentService.arrangeAppointment(appointment);
         if (appDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Appointment>(appDb, HttpStatus.CREATED);
+        return new ResponseEntity<>(appDb, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "{appointment_id}")
@@ -54,6 +65,6 @@ public class AppointmentController {
     public ResponseEntity<Appointment> updateAppointment(@RequestBody Appointment appointment) {
         Appointment appDb = appointmentService.updateAppointment(appointment);
         if (appDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Appointment>(appDb, HttpStatus.OK);
+        return new ResponseEntity<>(appDb, HttpStatus.OK);
     }
 }

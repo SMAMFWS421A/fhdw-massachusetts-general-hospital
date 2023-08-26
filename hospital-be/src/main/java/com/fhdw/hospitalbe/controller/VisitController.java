@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "api/v1/visit")
 
@@ -26,7 +28,25 @@ public class VisitController {
     public ResponseEntity<Visit> findVisit(@PathVariable("visit_id") long visit_id) {
         Visit visDb = visitService.findVisit(visit_id);
         if (visDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Visit>(visDb, HttpStatus.OK);
+        return new ResponseEntity<>(visDb, HttpStatus.OK);
+    }
+
+    @GetMapping()
+    @ApiResponse(responseCode = "200", description = "Found Visits",
+            content = @Content(schema = @Schema(implementation = List.class)))
+    public ResponseEntity<List<Visit>> findAllVisit() {
+        List<Visit> visits = visitService.findAllVisits();
+        if (visits == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(visits, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/register-from-appointment/{appointment_id}")
+    @ApiResponse(responseCode = "201", description = "Registered Visit",
+            content = @Content(schema = @Schema(implementation = Visit.class)))
+    public ResponseEntity<Visit> registerVisitfromAppointment(@PathVariable long appointment_id) {
+        Visit visDb = visitService.registerVisitFromAppointment(appointment_id);
+        if (visDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(visDb, HttpStatus.CREATED);
     }
 
     @PostMapping
@@ -35,17 +55,9 @@ public class VisitController {
     public ResponseEntity<Visit> registerVisit(@RequestBody Visit visit) {
         Visit visDb = visitService.registerVisit(visit);
         if (visDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Visit>(visDb, HttpStatus.CREATED);
+        return new ResponseEntity<>(visDb, HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/register-from-appointment/{appointment_id}")
-    @ApiResponse(responseCode = "201", description = "Registered Visit",
-            content = @Content(schema = @Schema(implementation = Visit.class)))
-    public ResponseEntity<Visit> registerVisitfromAppointment(@RequestBody long appointment_id) {
-        Visit visDb = visitService.registerVisitFromAppointment(appointment_id);
-        if (visDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Visit>(visDb, HttpStatus.CREATED);
-    }
 
     @DeleteMapping(path = "{visit_id}")
     @ApiResponse(responseCode = "204", description = "Canceled Visit",
@@ -61,6 +73,6 @@ public class VisitController {
     public ResponseEntity<Visit> updateVisit(@RequestBody Visit visit) {
         Visit visDb = visitService.updateVisit(visit);
         if (visDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Visit>(visDb, HttpStatus.OK);
+        return new ResponseEntity<>(visDb, HttpStatus.OK);
     }
 }

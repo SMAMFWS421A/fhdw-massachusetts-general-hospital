@@ -18,7 +18,7 @@ public class VisitTable {
     Long id;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
+    @JoinColumn(name = "patient_id")
     PatientRecordTable patientRecord;
 
     @ManyToOne

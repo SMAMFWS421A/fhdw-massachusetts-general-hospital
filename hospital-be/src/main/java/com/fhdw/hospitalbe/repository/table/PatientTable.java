@@ -43,4 +43,5 @@ public class PatientTable {
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "patient_record_id")
     PatientRecordTable patientRecord;
+
 }

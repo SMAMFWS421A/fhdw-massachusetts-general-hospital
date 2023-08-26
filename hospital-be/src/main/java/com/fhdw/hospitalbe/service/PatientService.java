@@ -4,6 +4,7 @@ import com.fhdw.hospitalbe.model.Patient;
 import com.fhdw.hospitalbe.model.mapper.PatientMapper;
 import com.fhdw.hospitalbe.repository.PatientRepository;
 import com.fhdw.hospitalbe.repository.table.PatientTable;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,8 +43,12 @@ public class PatientService {
         return PatientMapper.fromTable(patientTable);
     }
 
+    @Transactional
     public void deletePatient(Long id) {
-        if (id != null && this.repository.existsById(id)) this.repository.deleteById(id);
+        if (id != null && this.repository.existsById(id)){
+            this.repository.deleteById(id);
+        }
+
     }
 
     public Patient updatePatient(Patient patient) {
