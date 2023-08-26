@@ -4,7 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fhdw.hospitalbe.DatabaseTestUtil;
 import com.fhdw.hospitalbe.model.*;
 import com.fhdw.hospitalbe.model.builder.DoctorBuilder;
+import com.fhdw.hospitalbe.model.mapper.DoctorMapper;
 import com.fhdw.hospitalbe.repository.DoctorRepository;
+import com.fhdw.hospitalbe.repository.table.AppointmentTable;
+import com.fhdw.hospitalbe.repository.table.DoctorTable;
+import com.fhdw.hospitalbe.repository.table.PatientTable;
+import com.fhdw.hospitalbe.repository.table.VisitTable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +48,7 @@ public class DoctorControllerTest {
 
     @Test
     public void getDoctorTest() throws Exception {
-        Doctor doctor = databaseTestUtil.createDoctor();
+        Doctor doctor = DoctorMapper.fromTable(databaseTestUtil.createDoctor());
 
         mockMvc.perform(get("/api/v1/doctor/" + doctor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -72,14 +77,14 @@ public class DoctorControllerTest {
                     Assertions.assertNotNull(doctorResponse.getId());
                 });
 
-        Doctor doctorDb = doctorRepository.findOne(Example.of(doctor)).get();
+        DoctorTable doctorDb = doctorRepository.findOne(Example.of(DoctorMapper.toTable(doctor))).get();
         Assertions.assertEquals(doctor.getLastName(), doctorDb.getLastName());
         Assertions.assertNotNull(doctorDb.getId());
     }
 
     @Test
     public void deleteDoctorTest() throws Exception{
-        Doctor doctor = databaseTestUtil.createDoctor();
+        Doctor doctor = DoctorMapper.fromTable(databaseTestUtil.createDoctor());
 
         mockMvc.perform(delete("/api/v1/doctor/" + doctor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -91,10 +96,10 @@ public class DoctorControllerTest {
 
     @Test
     public void deleteDoctorWithAppointmentsAndVisitsTest() throws Exception{
-        Doctor d = databaseTestUtil.createDoctor();
-        Patient p = databaseTestUtil.createPatientWithRecord();
-        Appointment a = databaseTestUtil.createAppointment(d, p);
-        Visit v = databaseTestUtil.createVisit(d, p);
+        DoctorTable d = databaseTestUtil.createDoctor();
+        PatientTable p = databaseTestUtil.createPatientWithRecord();
+        AppointmentTable a = databaseTestUtil.createAppointment(d, p.getPatientRecord());
+        VisitTable v = databaseTestUtil.createVisit(d, p.getPatientRecord());
 
         mockMvc.perform(delete("/api/v1/doctor/" + d.getId())
                         .contentType(MediaType.APPLICATION_JSON)

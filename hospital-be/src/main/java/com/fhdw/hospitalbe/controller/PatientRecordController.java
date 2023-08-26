@@ -1,6 +1,5 @@
 package com.fhdw.hospitalbe.controller;
 
-import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.PatientRecord;
 import com.fhdw.hospitalbe.service.PatientRecordService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,21 +21,25 @@ public class PatientRecordController {
     }
 
     @GetMapping(path = "{patientRecord_id}")
-    @ApiResponse(responseCode = "200", description = "Found Patient_Record",
+    @ApiResponse(responseCode = "200", description = "Found Patient Record",
             content = @Content(schema = @Schema(implementation = PatientRecord.class)))
-    public ResponseEntity<PatientRecord> getPatientRecord(@PathVariable("patientRecord_id") long patientRecord_id) {
-        return new ResponseEntity<PatientRecord>(patientRecordService.getPatientRecord(patientRecord_id), HttpStatus.OK);
+    public ResponseEntity<PatientRecord> findPatientRecord(@PathVariable("patientRecord_id") long patientRecord_id) {
+        PatientRecord patRecDb = patientRecordService.findPatientRecord(patientRecord_id);
+        if (patRecDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<PatientRecord>(patRecDb, HttpStatus.OK);
     }
 
     @PostMapping
-    @ApiResponse(responseCode = "201", description = "Created Patient_Record",
+    @ApiResponse(responseCode = "201", description = "Created Patient Record",
             content = @Content(schema = @Schema(implementation = PatientRecord.class)))
     public ResponseEntity<PatientRecord> createPatientRecord(@RequestBody PatientRecord patientRecord) {
-        return new ResponseEntity<PatientRecord>(patientRecordService.createPatientRecord(patientRecord), HttpStatus.CREATED);
+        PatientRecord patRecDb = patientRecordService.createPatientRecord(patientRecord);
+        if (patRecDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<PatientRecord>(patRecDb, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "{patientRecord_id}")
-    @ApiResponse(responseCode = "204", description = "Deleted Patient_Record",
+    @ApiResponse(responseCode = "204", description = "Deleted Patient Record",
             content = @Content(schema = @Schema(implementation = PatientRecord.class)))
     public ResponseEntity<Void> deletePatientRecord(@PathVariable("patientRecord_id") long patientRecord) {
         patientRecordService.deletePatientRecord(patientRecord);
@@ -44,9 +47,11 @@ public class PatientRecordController {
     }
 
     @PutMapping(path= "{patientRecord_id}")
-    @ApiResponse(responseCode = "200", description = "Update Patient_Record",
+    @ApiResponse(responseCode = "200", description = "Update Patient Record",
             content = @Content(schema = @Schema(implementation = PatientRecord.class)))
     public ResponseEntity<PatientRecord> updatePatientRecord(@RequestBody PatientRecord patientRecord) {
-        return new ResponseEntity<PatientRecord>(patientRecordService.updatePatientRecord(patientRecord), HttpStatus.OK);
+        PatientRecord patRecDb = patientRecordService.updatePatientRecord(patientRecord);
+        if (patRecDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<PatientRecord>(patRecDb, HttpStatus.OK);
     }
 }

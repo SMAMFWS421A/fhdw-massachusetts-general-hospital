@@ -1,6 +1,5 @@
 package com.fhdw.hospitalbe.controller;
 
-import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.Patient;
 import com.fhdw.hospitalbe.service.PatientService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,15 +23,19 @@ public class PatientController {
     @GetMapping(path = "{patient_id}")
     @ApiResponse(responseCode = "200", description = "Found Patient",
             content = @Content(schema = @Schema(implementation = Patient.class)))
-    public ResponseEntity<Patient> getPatient(@PathVariable("patient_id") long patient_id) {
-        return new ResponseEntity<Patient>(patientService.getPatient(patient_id), HttpStatus.OK);
+    public ResponseEntity<Patient> findPatient(@PathVariable("patient_id") long patient_id) {
+        Patient patDb = patientService.findPatient(patient_id);
+        if (patDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Patient>(patDb, HttpStatus.OK);
     }
 
     @PostMapping
-    @ApiResponse(responseCode = "201", description = "Created Patient",
+    @ApiResponse(responseCode = "201", description = "Received Patient",
             content = @Content(schema = @Schema(implementation = Patient.class)))
-    public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
-        return new ResponseEntity<Patient>(patientService.createPatient(patient), HttpStatus.CREATED);
+    public ResponseEntity<Patient> receivePatient(@RequestBody Patient patient) {
+        Patient patDb = patientService.receivePatient(patient);
+        if (patDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Patient>(patDb, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "{patient_id}")
@@ -43,10 +46,12 @@ public class PatientController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path= "{patient_id}")
-    @ApiResponse(responseCode = "200", description = "Update Patient",
+    @PutMapping(path = "{patient_id}")
+    @ApiResponse(responseCode = "200", description = "Updated Patient",
             content = @Content(schema = @Schema(implementation = Patient.class)))
     public ResponseEntity<Patient> updateDoctor(@RequestBody Patient patient) {
-        return new ResponseEntity<Patient>(patientService.updatePatient(patient), HttpStatus.OK);
+        Patient patDb = patientService.updatePatient(patient);
+        if (patDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Patient>(patDb, HttpStatus.OK);
     }
 }

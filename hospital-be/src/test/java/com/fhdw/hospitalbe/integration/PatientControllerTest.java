@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fhdw.hospitalbe.DatabaseTestUtil;
 import com.fhdw.hospitalbe.model.Patient;
 import com.fhdw.hospitalbe.model.builder.PatientBuilder;
+import com.fhdw.hospitalbe.model.mapper.PatientMapper;
 import com.fhdw.hospitalbe.repository.PatientRepository;
+import com.fhdw.hospitalbe.repository.table.PatientTable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +45,7 @@ public class PatientControllerTest {
 
     @Test
     public void getPatientTest() throws Exception {
-        Patient patient = databaseTestUtil.createPatientWithRecord();
+        Patient patient = PatientMapper.fromTable(databaseTestUtil.createPatientWithRecord());
 
         mockMvc.perform(get("/api/v1/patient/" + patient.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -71,7 +73,7 @@ public class PatientControllerTest {
                     Assertions.assertNotNull(patientResponse.getId());
                 });
 
-        Patient patientDb = patientRepository.findOne(Example.of(patient)).get();
+        PatientTable patientDb = patientRepository.findOne(Example.of(PatientMapper.toTable(patient))).get();
         Assertions.assertEquals(patient.getLastName(), patientDb.getLastName());
         Assertions.assertNotNull(patientDb.getId());
     }
