@@ -1,10 +1,13 @@
 package com.fhdw.hospitalbe.service;
 
-import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.Patient;
+import com.fhdw.hospitalbe.model.mapper.PatientMapper;
 import com.fhdw.hospitalbe.repository.PatientRepository;
-import java.util.List;
+import com.fhdw.hospitalbe.repository.table.PatientTable;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PatientService {
@@ -15,35 +18,47 @@ public class PatientService {
         this.repository = repository;
     }
 
-    public List<Patient> getPatients() {
-        return this.repository.findAll();
+    public List<Patient> findAllPatients() {
+        List<PatientTable> patientTableList = this.repository.findAll();
+        return patientTableList.stream().map(PatientMapper::fromTable).toList();
     }
 
-    public Patient getPatient(Long id) {
+    public Patient findPatient(Long id) {
         if (id == null) {
             return null;
         }
-        return this.repository.findById(id).orElse(null);
+        PatientTable patientTable = this.repository.findById(id).orElse(null);
+        if (patientTable == null) return null;
+        return PatientMapper.fromTable(patientTable);
     }
 
-    public Patient createPatient(Patient patient) {
+    public Patient receivePatient(Patient patient) {
         if (patient == null) {
             return null;
         }
-        if (patient.getPatientRecord() != null) {
-            patient.getPatientRecord().setPatient(patient);
+        PatientTable patientTable = this.repository.save(PatientMapper.toTable(patient));
+        if (patientTable.getPatientRecord() != null) {
+            patientTable.getPatientRecord().setPatient(patientTable);
         }
-        return this.repository.save(patient);
+        return PatientMapper.fromTable(patientTable);
     }
 
+    @Transactional
     public void deletePatient(Long id) {
-        if (id != null && this.repository.existsById(id)) this.repository.deleteById(id);
+        if (id != null && this.repository.existsById(id)){
+            this.repository.deleteById(id);
+        }
+
     }
 
     public Patient updatePatient(Patient patient) {
         if (patient == null) {
             return null;
         }
-        return this.repository.save(patient);
+        PatientTable patientTable = this.repository.save(PatientMapper.toTable(patient));
+        if (patientTable.getPatientRecord() != null) {
+            patientTable.getPatientRecord().setPatient(patientTable);
+        }
+        return PatientMapper.fromTable(patientTable);
     }
 }

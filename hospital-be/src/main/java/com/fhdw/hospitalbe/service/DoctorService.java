@@ -1,9 +1,12 @@
 package com.fhdw.hospitalbe.service;
 
 import com.fhdw.hospitalbe.model.Doctor;
+import com.fhdw.hospitalbe.model.mapper.DoctorMapper;
 import com.fhdw.hospitalbe.repository.DoctorRepository;
-import java.util.List;
+import com.fhdw.hospitalbe.repository.table.DoctorTable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DoctorService {
@@ -14,32 +17,37 @@ public class DoctorService {
     this.repository = repository;
   }
 
-  public List<Doctor> getDoctors() {
-    return this.repository.findAll();
+  public List<Doctor> findAllDoctors() {
+    List<DoctorTable> doctorTableList = this.repository.findAll();
+    return doctorTableList.stream().map(DoctorMapper::fromTable).toList();
   }
 
-  public Doctor getDoctor(Long id) {
+  public Doctor findDoctor(Long id) {
     if (id == null) {
       return null;
     }
-    return this.repository.findById(id).orElse(null);
+    DoctorTable doctorTable = this.repository.findById(id).orElse(null);
+    if (doctorTable == null) return null;
+    return DoctorMapper.fromTable(doctorTable);
   }
 
-  public Doctor createDoctor(Doctor doctor) {
+  public Doctor hireDoctor(Doctor doctor) {
     if (doctor == null) {
       return null;
     }
-    return this.repository.save(doctor);
+    DoctorTable doctorTable = this.repository.save(DoctorMapper.toTable(doctor));
+    return DoctorMapper.fromTable(doctorTable);
   }
 
-  public void deleteDoctor(Long id) {
-        if (id != null && this.repository.existsById(id)) this.repository.deleteById(id);
-    }
+  public void fireDoctor(Long id) {
+    if (id != null && this.repository.existsById(id)) this.repository.deleteById(id);
+  }
 
   public Doctor updateDoctor(Doctor doctor) {
     if (doctor == null) {
       return null;
     }
-    return this.repository.save(doctor);
+    DoctorTable doctorTable = this.repository.save(DoctorMapper.toTable(doctor));
+    return DoctorMapper.fromTable(doctorTable);
   }
 }

@@ -1,7 +1,7 @@
 package com.fhdw.hospitalbe.model;
 
+import com.fhdw.hospitalbe.model.builder.AppointmentBuilder;
 import com.fhdw.hospitalbe.model.builder.VisitBuilder;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,46 +9,20 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Visit {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false)
     Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
     PatientRecord patientRecord;
-
-    @ManyToOne
-    @JoinColumn(name = "doctor_id")
     Doctor doctor;
-
-    @Column(name = "appeal")
     String appeal;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "visiting_time")
     LocalDateTime plannedTime;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "arrived_time")
     LocalDateTime arrivedTime;
-
-    @Column(name = "anamnesis")
     String anamnesis;
-
-    @Column(name = "measurement")
     String measurement;
-
-    @Column(name = "diagnosis")
     String diagnosis;
-
-    @Column(name = "plan_of_actions")
     String planOfActions;
 
     public Visit(VisitBuilder builder) {
@@ -62,5 +36,15 @@ public class Visit {
         this.measurement = builder.getMeasurement();
         this.diagnosis = builder.getDiagnosis();
         this.planOfActions = builder.getPlanOfActions();
+    }
+
+    public static Visit createVisitFromAppointment(Appointment appointment) {
+        if (appointment == null) {
+            return null;
+        }
+        Visit visit = new VisitBuilder().patientRecord(appointment.getPatientRecord())
+                .doctor(appointment.getDoctor()).appeal(appointment.getAppeal()).plannedTime(appointment.getVisitingTime())
+                .arrivedTime(LocalDateTime.now()).build();
+        return visit;
     }
 }

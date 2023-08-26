@@ -1,15 +1,11 @@
 package com.fhdw.hospitalbe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fhdw.hospitalbe.model.Appointment;
-import com.fhdw.hospitalbe.model.Doctor;
-import com.fhdw.hospitalbe.model.Patient;
-import com.fhdw.hospitalbe.model.Visit;
-import com.fhdw.hospitalbe.model.builder.*;
 import com.fhdw.hospitalbe.model.enums.Area;
 import com.fhdw.hospitalbe.model.enums.Gender;
 import com.fhdw.hospitalbe.model.enums.Position;
 import com.fhdw.hospitalbe.repository.*;
+import com.fhdw.hospitalbe.repository.table.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,8 +39,8 @@ public class DatabaseTestUtil {
         patientRepository.deleteAll();
     }
 
-    public Doctor createDoctor() {
-        return doctorRepository.save(new DoctorBuilder()
+    public DoctorTable createDoctor() {
+        return doctorRepository.save(DoctorTable.builder()
                 .firstName("First")
                 .lastName("Last")
                 .gender(Gender.Male)
@@ -53,34 +49,34 @@ public class DatabaseTestUtil {
                 .build());
     }
 
-    public Patient createPatientWithRecord() {
-        Patient p =  new PatientBuilder()
+    public PatientTable createPatientWithRecord() {
+        PatientTable p =  PatientTable.builder()
                 .firstName("F")
                 .lastName("L")
                 .gender(Gender.Male)
                 .birthday(LocalDate.of(2020, 10, 10))
                 .isPrivate(true)
-                .patientRecord(new PatientRecordBuilder()
+                .patientRecord(PatientRecordTable.builder()
                         .build())
                 .build();
         p.getPatientRecord().setPatient(p);
         return patientRepository.save(p);
     }
 
-    public Appointment createAppointment(Doctor d, Patient p) {
-        return appointmentRepository.save(new AppointmentBuilder()
+    public AppointmentTable createAppointment(DoctorTable d, PatientRecordTable pr) {
+        return appointmentRepository.save(AppointmentTable.builder()
                 .appeal("Grund")
                 .doctor(d)
-                .patientRecord(p.getPatientRecord())
+                .patientRecord(pr)
                 .visitingTime(LocalDateTime.of(2020, 10, 10, 10, 10))
                 .build());
     }
 
-    public Visit createVisit(Doctor d, Patient p) {
+    public VisitTable createVisit(DoctorTable d, PatientRecordTable pr) {
         return visitRepository.save(
-                new VisitBuilder()
+                VisitTable.builder()
                         .doctor(d)
-                        .patientRecord(p.getPatientRecord())
+                        .patientRecord(pr)
                         .arrivedTime(LocalDateTime.of(2020, 10, 10, 10, 10))
                         .build()
         );
@@ -93,8 +89,4 @@ public class DatabaseTestUtil {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
 }

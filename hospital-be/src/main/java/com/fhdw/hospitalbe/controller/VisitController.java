@@ -1,6 +1,5 @@
 package com.fhdw.hospitalbe.controller;
 
-import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.Visit;
 import com.fhdw.hospitalbe.service.VisitService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,6 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/visit")
@@ -24,22 +25,45 @@ public class VisitController {
     @GetMapping(path = "{visit_id}")
     @ApiResponse(responseCode = "200", description = "Found Visit",
             content = @Content(schema = @Schema(implementation = Visit.class)))
-    public ResponseEntity<Visit> getVisit(@PathVariable("visit_id") long visit_id) {
-        return new ResponseEntity<Visit>(visitService.getVisit(visit_id), HttpStatus.OK);
+    public ResponseEntity<Visit> findVisit(@PathVariable("visit_id") long visit_id) {
+        Visit visDb = visitService.findVisit(visit_id);
+        if (visDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(visDb, HttpStatus.OK);
+    }
+
+    @GetMapping()
+    @ApiResponse(responseCode = "200", description = "Found Visits",
+            content = @Content(schema = @Schema(implementation = List.class)))
+    public ResponseEntity<List<Visit>> findAllVisit() {
+        List<Visit> visits = visitService.findAllVisits();
+        if (visits == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(visits, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/register-from-appointment/{appointment_id}")
+    @ApiResponse(responseCode = "201", description = "Registered Visit",
+            content = @Content(schema = @Schema(implementation = Visit.class)))
+    public ResponseEntity<Visit> registerVisitfromAppointment(@PathVariable long appointment_id) {
+        Visit visDb = visitService.registerVisitFromAppointment(appointment_id);
+        if (visDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(visDb, HttpStatus.CREATED);
     }
 
     @PostMapping
-    @ApiResponse(responseCode = "201", description = "Created Visit",
+    @ApiResponse(responseCode = "201", description = "Registered Visit",
             content = @Content(schema = @Schema(implementation = Visit.class)))
-    public ResponseEntity<Visit> createVisit(@RequestBody Visit visit) {
-        return new ResponseEntity<Visit>(visitService.createVisit(visit), HttpStatus.CREATED);
+    public ResponseEntity<Visit> registerVisit(@RequestBody Visit visit) {
+        Visit visDb = visitService.registerVisit(visit);
+        if (visDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(visDb, HttpStatus.CREATED);
     }
 
+
     @DeleteMapping(path = "{visit_id}")
-    @ApiResponse(responseCode = "204", description = "Deleted Visit",
+    @ApiResponse(responseCode = "204", description = "Canceled Visit",
             content = @Content(schema = @Schema(implementation = Visit.class)))
-    public ResponseEntity<Void> deleteVisit(@PathVariable("visit_id") long visit_id) {
-        visitService.deleteVisit(visit_id);
+    public ResponseEntity<Void> cancelVisit(@PathVariable("visit_id") long visit_id) {
+        visitService.cancelVisit(visit_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -47,6 +71,8 @@ public class VisitController {
     @ApiResponse(responseCode = "200", description = "Update Visit",
             content = @Content(schema = @Schema(implementation = Visit.class)))
     public ResponseEntity<Visit> updateVisit(@RequestBody Visit visit) {
-        return new ResponseEntity<Visit>(visitService.updateVisit(visit), HttpStatus.OK);
+        Visit visDb = visitService.updateVisit(visit);
+        if (visDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(visDb, HttpStatus.OK);
     }
 }

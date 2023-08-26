@@ -1,10 +1,12 @@
 package com.fhdw.hospitalbe.service;
 
-import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.PatientRecord;
+import com.fhdw.hospitalbe.model.mapper.PatientRecordMapper;
 import com.fhdw.hospitalbe.repository.PatientRecordRepository;
-import java.util.List;
+import com.fhdw.hospitalbe.repository.table.PatientRecordTable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PatientRecordService {
@@ -16,22 +18,26 @@ public class PatientRecordService {
   }
 
 
-  public List<PatientRecord> getPatientRecords() {
-    return this.repository.findAll();
+  public List<PatientRecord> findAllPatientRecords() {
+    List<PatientRecordTable> patientRecordList = this.repository.findAll();
+    return patientRecordList.stream().map(PatientRecordMapper::fromTable).toList();
   }
 
-  public PatientRecord getPatientRecord(Long id) {
+  public PatientRecord findPatientRecord(Long id) {
     if (id == null) {
       return null;
     }
-    return this.repository.findById(id).orElse(null);
+    PatientRecordTable patientRecordTable = this.repository.findById(id).orElse(null);
+    if (patientRecordTable == null) return null;
+    return PatientRecordMapper.fromTable(patientRecordTable);
   }
 
   public PatientRecord createPatientRecord(PatientRecord patientRecord) {
     if (patientRecord == null) {
       return null;
     }
-    return this.repository.save(patientRecord);
+    PatientRecordTable patientRecordTable = this.repository.save(PatientRecordMapper.toTable(patientRecord));
+    return PatientRecordMapper.fromTable(patientRecordTable);
   }
 
   public void deletePatientRecord(Long id) {
@@ -42,6 +48,7 @@ public class PatientRecordService {
     if (patientRecord == null) {
       return null;
     }
-    return this.repository.save(patientRecord);
+    PatientRecordTable patientRecordTable = this.repository.save(PatientRecordMapper.toTable(patientRecord));
+    return PatientRecordMapper.fromTable(patientRecordTable);
   }
 }
