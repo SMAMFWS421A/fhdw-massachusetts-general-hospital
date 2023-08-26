@@ -6,7 +6,10 @@ import com.fhdw.hospitalbe.model.Patient;
 import com.fhdw.hospitalbe.model.builder.PatientBuilder;
 import com.fhdw.hospitalbe.model.mapper.PatientMapper;
 import com.fhdw.hospitalbe.repository.PatientRepository;
+import com.fhdw.hospitalbe.repository.table.AppointmentTable;
+import com.fhdw.hospitalbe.repository.table.DoctorTable;
 import com.fhdw.hospitalbe.repository.table.PatientTable;
+import com.fhdw.hospitalbe.repository.table.VisitTable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,8 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.fhdw.hospitalbe.DatabaseTestUtil.asJsonString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -78,5 +81,31 @@ public class PatientControllerTest {
         Assertions.assertNotNull(patientDb.getId());
     }
 
+    @Test
+    public void deletePatientTest() throws Exception{
+        Patient patient = PatientMapper.fromTable(databaseTestUtil.createPatientWithRecord());
+
+        mockMvc.perform(delete("/api/v1/patient/" + patient.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        Assertions.assertEquals(0, patientRepository.findAll().size());
+    }
+
+    @Test
+    public void deletePatientWithAppointmentsAndVisitsTest() throws Exception{
+        DoctorTable d = databaseTestUtil.createDoctor();
+        PatientTable p = databaseTestUtil.createPatientWithRecord();
+        AppointmentTable a = databaseTestUtil.createAppointment(d, p.getPatientRecord());
+        VisitTable v = databaseTestUtil.createVisit(d, p.getPatientRecord());
+
+        mockMvc.perform(delete("/api/v1/patient/" + d.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        Assertions.assertEquals(0, patientRepository.findAll().size());
+    }
 
 }
