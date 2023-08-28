@@ -46,8 +46,9 @@ export default {
         }
 
         const updatePatient = async () => {
-            const response = await PatientService.updatePatient(1, 
+            const response = await PatientService.updatePatient( 
                 JSON.stringify({
+                    id: 1,
                     firstName: 'Ich wurde',
                     lastName: 'geupdated', 
                     gender: 'Female',
