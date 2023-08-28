@@ -1,5 +1,6 @@
 package com.fhdw.hospitalbe.integration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fhdw.hospitalbe.DatabaseTestUtil;
@@ -23,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.fhdw.hospitalbe.DatabaseTestUtil.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -69,6 +71,26 @@ public class AppointmentControllerTest {
     }
 
     @Test
+    public void getAllAppointmentsTest() throws Exception {
+        DoctorTable d = databaseTestUtil.createDoctor();
+        PatientTable prt = databaseTestUtil.createPatientWithRecord();
+        AppointmentTable appointment = databaseTestUtil.createAppointment(d, prt.getPatientRecord());
+        DoctorTable d2 = databaseTestUtil.createDoctor();
+        AppointmentTable appointment2 = databaseTestUtil.createAppointment(d2, prt.getPatientRecord());
+
+        mockMvc.perform(get("/api/v1/appointment")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    List<Appointment> appointmentResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Appointment>>(){});
+                    Assertions.assertEquals(2, appointmentResponse.size());
+                    Assertions.assertNotNull(appointmentResponse.get(0).getId());
+                    Assertions.assertNotNull(appointmentResponse.get(1).getId());
+                });
+    }
+
+    @Test
     public void createAppointmentTest() throws Exception {
         DoctorTable d = databaseTestUtil.createDoctor();
         PatientTable prt = databaseTestUtil.createPatientWithRecord();
@@ -95,6 +117,32 @@ public class AppointmentControllerTest {
         Assertions.assertEquals(appointmentTable.getVisitingTime(), appointment.getVisitingTime());
         Assertions.assertNotNull(appointmentTable.getId());
     }
+
+    @Test
+    public void updateAppointmentTest() throws Exception {
+        DoctorTable d = databaseTestUtil.createDoctor();
+        PatientTable prt = databaseTestUtil.createPatientWithRecord();
+        AppointmentTable appointmentT = databaseTestUtil.createAppointment(d, prt.getPatientRecord());
+        appointmentT.setAppeal("Neu");
+        Appointment appointment = AppointmentMapper.fromTable(appointmentT);
+
+        mockMvc.perform(put("/api/v1/appointment")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(appointment))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    Appointment appointmentResponse = objectMapper.readValue(result.getResponse().getContentAsString(), Appointment.class);
+                    Assertions.assertEquals(appointment.getAppeal(), appointmentResponse.getAppeal());
+                    Assertions.assertEquals(appointment.getId(),appointmentResponse.getId());
+                });
+
+        AppointmentTable appointmentTable = appointmentRepository.findOne(Example.of(AppointmentMapper.toTable(appointment))).get();
+        Assertions.assertEquals(appointmentTable.getAppeal(), appointment.getAppeal());
+        Assertions.assertEquals(appointmentTable.getVisitingTime(), appointment.getVisitingTime());
+        Assertions.assertEquals(appointment.getId(),appointmentTable.getId());
+    }
+
 
     @Test
     public void deleteAppointmentTest() throws Exception {
