@@ -15,6 +15,8 @@ import java.util.List;
 @RestController
 @Tag(name = "appointment")
 @RequestMapping(path = "api/v1/appointment")
+@CrossOrigin("http://localhost:8080")
+
 public class AppointmentController {
 
     private final AppointmentService appointmentService;

@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/visit")
+@CrossOrigin("http://localhost:8080")
 
 public class VisitController {
 
