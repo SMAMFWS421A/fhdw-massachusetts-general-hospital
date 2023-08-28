@@ -11,8 +11,12 @@ Ein Demo-Projekt zur Entwicklung eines Krankenhaus Management Systems
 
 
 ## Dokumentation
-1. [Technologieauswahl](/doku/Technologieauswahl.md)
 1. [Use Cases](/doku/UseCases.md)
+1. [Meeting Protokolle](/doku/DailyLogs/README.md)
+1. [Technologieauswahl](/doku/Technologieauswahl.md)
+1. [Verwendete Design Patterns](/doku/DesignPatterns.md)
 1. [Deployment](/doku/Deployment.md)
+
+
 
 

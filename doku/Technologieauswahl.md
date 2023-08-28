@@ -17,13 +17,14 @@ halten. Zusätzlich gibt es uns die Möglichkeit, das Frontend und somit die Anw
 
  ### Weitere Tools die wir einsetzen
 
-| Tool                 | Verwendung                                  |                                                                                                                                                                                                  
-|----------------------|---------------------------------------------|
-| VSCode               | Code-Editor (Frontend)                      |                                                                                                                                                                                                        
-| WebStorm             | IDE (Frontend)                              |
-| IntelliJ             | IDE (Backend)                               |
-| Git                  | Versionsverwaltung                          |
-| GitHub               | Verwaltung der Repository mit Dokumentation |
-| Docker               | Deployment                                  |
-| Markdown             | Dokumentation                               |
-| Discord              | Kommunikation                               |
+| Tool     | Verwendung                                  |                                                                                                                                                                                                  
+|----------|---------------------------------------------|
+| VSCode   | Code-Editor (Frontend)                      |                                                                                                                                                                                                        
+| WebStorm | IDE (Frontend)                              |
+| IntelliJ | IDE (Backend)                               |
+| Git      | Versionsverwaltung                          |
+| GitHub   | Verwaltung der Repository mit Dokumentation |
+| Docker   | Deployment                                  |
+| Markdown | Dokumentation                               |
+| Discord  | Kommunikation                               |
+| Figma    | UI Design                                   |
