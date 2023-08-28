@@ -1,10 +1,12 @@
 package com.fhdw.hospitalbe.service;
 
 import com.fhdw.hospitalbe.model.Appointment;
-import com.fhdw.hospitalbe.model.Doctor;
+import com.fhdw.hospitalbe.model.mapper.AppointmentMapper;
 import com.fhdw.hospitalbe.repository.AppointmentRepository;
-import java.util.List;
+import com.fhdw.hospitalbe.repository.table.AppointmentTable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AppointmentService {
@@ -15,32 +17,38 @@ public class AppointmentService {
     this.repository = repository;
   }
 
-  public List<Appointment> getAppointments() {
-    return this.repository.findAll();
+  public List<Appointment> findAllAppointments() {
+    List<AppointmentTable> appointmentTables = this.repository.findAll();
+    return appointmentTables.stream().map(AppointmentMapper::fromTable).toList();
+
   }
 
-  public Appointment getAppointment(Long id) {
+  public Appointment findAppointment(Long id) {
     if (id == null) {
       return null;
     }
-    return this.repository.findById(id).orElse(null);
+    AppointmentTable appointmentTable = this.repository.findById(id).orElse(null);
+    if (appointmentTable == null) return null;
+    return AppointmentMapper.fromTable(appointmentTable);
   }
 
-  public Appointment createAppointment(Appointment appointment) {
+  public Appointment arrangeAppointment(Appointment appointment) {
     if (appointment == null) {
       return null;
     }
-    return this.repository.save(appointment);
+    AppointmentTable appointmentTable = this.repository.save(AppointmentMapper.toTable(appointment));
+    return AppointmentMapper.fromTable(appointmentTable);
   }
 
-  public void deleteAppointment(Long id) {
-        if (id != null && this.repository.existsById(id)) this.repository.deleteById(id);
-    }
+  public void cancelAppointment(Long id) {
+    if (id != null && this.repository.existsById(id)) this.repository.deleteById(id);
+  }
 
   public Appointment updateAppointment(Appointment appointment) {
     if (appointment == null) {
       return null;
     }
-    return this.repository.save(appointment);
+    AppointmentTable appointmentTable = this.repository.save(AppointmentMapper.toTable(appointment));
+    return AppointmentMapper.fromTable(appointmentTable);
   }
 }

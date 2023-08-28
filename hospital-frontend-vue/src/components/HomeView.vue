@@ -77,13 +77,6 @@
 
 
 
-
-
-
-
-
-
-
     <div class="footer">
 
       <div class="first-element-low">

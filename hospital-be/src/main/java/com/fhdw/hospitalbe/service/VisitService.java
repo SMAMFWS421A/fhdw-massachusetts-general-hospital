@@ -1,15 +1,12 @@
 package com.fhdw.hospitalbe.service;
 
-import com.fhdw.hospitalbe.model.Appointment;
-import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.Visit;
-import com.fhdw.hospitalbe.model.builder.AppointmentBuilder;
-import com.fhdw.hospitalbe.model.builder.VisitBuilder;
+import com.fhdw.hospitalbe.model.mapper.VisitMapper;
 import com.fhdw.hospitalbe.repository.VisitRepository;
+import com.fhdw.hospitalbe.repository.table.VisitTable;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,56 +20,38 @@ public class VisitService {
         this.appointmentService = appointmentService;
     }
 
-    public List<Visit> getVisits() {
-        return this.repository.findAll();
+    public List<Visit> findAllVisits() {
+        List<VisitTable> visitTableList = this.repository.findAll();
+        return visitTableList.stream().map(VisitMapper::fromTable).toList();
     }
 
-    public Visit getVisit(Long id) {
+    public Visit findVisit(Long id) {
         if (id == null) {
             return null;
         }
-        return this.repository.findById(id).orElse(null);
+        VisitTable visitTable = this.repository.findById(id).orElse(null);
+        if (visitTable == null) return null;
+        return VisitMapper.fromTable(visitTable);
     }
 
-    public Visit createVisit(Visit visit) {
+    public Visit registerVisit(Visit visit) {
         if (visit == null) {
             return null;
         }
-        return this.repository.save(visit);
+        VisitTable visitTable = this.repository.save(VisitMapper.toTable(visit));
+        return VisitMapper.fromTable(visitTable);
     }
 
     @Transactional
-    public Visit createVisitFromAppointment(Long appointmentId) {
-        if (appointmentId == null) {
-            return null;
-        }
-        Appointment appointment = appointmentService.getAppointment(appointmentId);
-        if (appointment == null) {
-            return null;
-        }
-        Visit visit = new VisitBuilder().patientRecord(appointment.getPatientRecord())
-                .doctor(appointment.getDoctor()).appeal(appointment.getAppeal()).plannedTime(appointment.getVisitingTime())
-                .arrivedTime(LocalDateTime.now()).build();
-        appointmentService.deleteAppointment(appointmentId);
-        return this.repository.save(visit);
+    public Visit registerVisitFromAppointment(long appointment_id) {
+        Visit visit = Visit.createVisitFromAppointment(appointmentService.findAppointment(appointment_id));
+        if(visit == null) return null;
+        appointmentService.cancelAppointment(appointment_id);
+        return this.registerVisit(visit);
     }
 
-    @Transactional
-    public Appointment convertToAppointment(Long visitId) {
-        if (visitId == null) {
-            return null;
-        }
-        Visit visit = this.getVisit(visitId);
-        if (visit == null) {
-            return null;
-        }
-        this.deleteVisit(visitId);
-        Appointment appointment = new AppointmentBuilder().patientRecord(visit.getPatientRecord())
-                .doctor(visit.getDoctor()).appeal(visit.getAppeal()).visitingTime(visit.getPlannedTime()).build();
-        return appointmentService.createAppointment(appointment);
-    }
 
-    public void deleteVisit(Long id) {
+    public void cancelVisit(Long id) {
         if (id != null && this.repository.existsById(id)) {
             this.repository.deleteById(id);
         }
@@ -82,6 +61,7 @@ public class VisitService {
         if (visit == null) {
             return null;
         }
-        return this.repository.save(visit);
+        VisitTable visitTable = this.repository.save(VisitMapper.toTable(visit));
+        return VisitMapper.fromTable(visitTable);
     }
 }

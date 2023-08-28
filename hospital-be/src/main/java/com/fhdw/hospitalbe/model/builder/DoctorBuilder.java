@@ -1,14 +1,10 @@
 package com.fhdw.hospitalbe.model.builder;
 
-import com.fhdw.hospitalbe.model.Appointment;
 import com.fhdw.hospitalbe.model.Doctor;
-import com.fhdw.hospitalbe.model.Visit;
 import com.fhdw.hospitalbe.model.enums.Area;
 import com.fhdw.hospitalbe.model.enums.Gender;
 import com.fhdw.hospitalbe.model.enums.Position;
 import lombok.Getter;
-
-import java.util.Set;
 
 @Getter
 public class DoctorBuilder {
@@ -18,8 +14,6 @@ public class DoctorBuilder {
     Gender gender;
     Position position;
     Area area;
-    Set<Appointment> appointments;
-    Set<Visit> visits;
 
     public DoctorBuilder id(Long id) {
         this.id = id;
@@ -48,16 +42,6 @@ public class DoctorBuilder {
 
     public DoctorBuilder area(Area area) {
         this.area = area;
-        return this;
-    }
-
-    public DoctorBuilder appointments(Set<Appointment> appointments) {
-        this.appointments = appointments;
-        return this;
-    }
-
-    public DoctorBuilder visits(Set<Visit> visits) {
-        this.visits = visits;
         return this;
     }
 
