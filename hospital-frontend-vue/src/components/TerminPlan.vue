@@ -95,141 +95,113 @@
 
 
 <script>
-import dummyDataTerminPlan from '@/assets/dummyDataTerminPlan.json';
 
+  import TerminPlanModel from '@/models/TerminPlanModel';
 
-
-function getWeekStartDate(date) {
-  const d = new Date(date);
-  const day = d.getDay();
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-  return new Date(d.setDate(diff)).toISOString().split('T')[0];
-}
-
-
-
-export default {
+  export default {
   data() {
-    return {
-      appointments: dummyDataTerminPlan.appointments,
-      doctors: dummyDataTerminPlan.doctors,
-      patients: dummyDataTerminPlan.patients,
-      selectedAppointment: null,
-      isNewAppointmentFormOpen: false,
-      newAppointment: {
-        date: '',
-        time: '',
-        description: '',
-        doctorId: null,
-        patientId: null,
-      },
-      appointmentsByDay: {},
-      appointmentsByWeek: {},
-    };
-  },
-
+  return {
+  isNewAppointmentFormOpen: false,
+  newAppointment: {
+  date: '',
+  time: '',
+  description: '',
+  doctorId: null,
+  patientId: null,
+},
+  selectedAppointment: null,
+};
+},
   computed: {
-    backgroundImagePath() {
-      return require('@/assets/TerminPlanBild.jpg')
-    },
-    backgroundImageStyle(){
-      return{
-        backgroundImage: `url(${this.backgroundImagePath})`,
-        backgroundSize: '100% 100%',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        position: 'relative'
-
-      };
-    },
-  },
-
-
-
+  backgroundImagePath() {
+  return require('@/assets/TerminPlanBild.jpg');
+},
+  backgroundImageStyle() {
+  return {
+  backgroundImage: `url(${this.backgroundImagePath})`,
+  backgroundSize: '100% 100%',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  position: 'relative',
+};
+},
+  appointments() {
+  return TerminPlanModel.appointments;
+},
+  doctors() {
+  return TerminPlanModel.doctors;
+},
+  patients() {
+  return TerminPlanModel.patients;
+},
+  appointmentsByDay() {
+  return TerminPlanModel.groupAppointmentsByDay();
+},
+  appointmentsByWeek() {
+  return TerminPlanModel.groupAppointmentsByWeek();
+},
+},
   methods: {
-    getDoctorName(doctorId) {
-      const doctor = this.doctors.find(doctor => doctor.id === doctorId);
-      return doctor ? doctor.name : 'Unbekannter Arzt';
+  getDoctorName(doctorId) {
+  return TerminPlanModel.getDoctorName(doctorId);
+},
+  getPatientName(patientId) {
+  return TerminPlanModel.getPatientName(patientId);
+},
+  editAppointment(appointment) {
+  this.selectedAppointment = { ...appointment };
+},
+  saveAppointmentChanges() {
+  if (this.selectedAppointment) {
+  const index = this.appointments.findIndex(
+  appointment => appointment.id === this.selectedAppointment.id
+  );
+  if (index !== -1) {
+  this.appointments[index] = { ...this.selectedAppointment };
+  TerminPlanModel.updateAppointmentInWeekView(this.selectedAppointment);
+  TerminPlanModel.updateAppointmentInDayView(this.selectedAppointment);
+  this.selectedAppointment = null;
+}
+}
+},
+  cancelAppointmentEdit() {
+  this.selectedAppointment = null;
+},
+  deleteAppointment(appointmentId) {
+  const index = this.appointments.findIndex(appointment => appointment.id === appointmentId);
+  if (index !== -1) {
+  this.appointments.splice(index, 1);
+}
+},
+  openNewAppointmentForm() {
+  this.isNewAppointmentFormOpen = true;
+},
+  createNewAppointment() {
+  if (this.newAppointment.date && this.newAppointment.time) {
+  const newId = Math.max(...this.appointments.map(appointment => appointment.id)) + 1;
+  this.newAppointment.id = newId;
+  this.appointments.push({ ...this.newAppointment });
+  this.cancelNewAppointment();
+}
+},
+  cancelNewAppointment() {
+  this.newAppointment = {
+  date: '',
+  time: '',
+  description: '',
+  doctorId: null,
+  patientId: null,
+};
+  this.isNewAppointmentFormOpen = false;
+},
+},
+    mounted() {
+      TerminPlanModel.groupAppointmentsByDay();
+      TerminPlanModel.groupAppointmentsByWeek();
     },
-    getPatientName(patientId) {
-      const patient = this.patients.find(patient => patient.id === patientId);
-      return patient ? patient.name : 'Unbekannter Patient';
-    },
-    editAppointment(appointment) {
-      this.selectedAppointment = { ...appointment };
-    },
-    saveAppointmentChanges() {
-      if (this.selectedAppointment) {
-        const index = this.appointments.findIndex(appointment => appointment.id === this.selectedAppointment.id);
-        if (index !== -1) {
-          this.appointments[index] = { ...this.selectedAppointment };
-          this.selectedAppointment = null;
-        }
-      }
-    },
-    cancelAppointmentEdit() {
-      this.selectedAppointment = null;
-    },
-    deleteAppointment(appointmentId) {
-      const index = this.appointments.findIndex(appointment => appointment.id === appointmentId);
-      if (index !== -1) {
-        this.appointments.splice(index, 1);
-      }
-    },
-    openNewAppointmentForm() {
-      this.isNewAppointmentFormOpen = true;
-    },
-    createNewAppointment() {
-      if (this.newAppointment.date && this.newAppointment.time) {
-        const newId = Math.max(...this.appointments.map(appointment => appointment.id)) + 1;
-        this.newAppointment.id = newId;
-        this.appointments.push({ ...this.newAppointment });
-        this.cancelNewAppointment();
-      }
-    },
-    cancelNewAppointment() {
-      this.newAppointment = {
-        date: '',
-        time: '',
-        description: '',
-        doctorId: null,
-        patientId: null,
-      };
-      this.isNewAppointmentFormOpen = false;
-    },
-    groupAppointmentsByDay() {
-      this.appointmentsByDay = {};
-
-
-
-      for (const appointment of this.appointments) {
-        const date = appointment.date;
-        if (!this.appointmentsByDay[date]) {
-          this.appointmentsByDay[date] = [];
-        }
-        this.appointmentsByDay[date].push(appointment);
-      }
-    },
-    groupAppointmentsByWeek() {
-      this.appointmentsByWeek = {};
-
-
-
-      for (const appointment of this.appointments) {
-        const weekStartDate = getWeekStartDate(appointment.date);
-        if (!this.appointmentsByWeek[weekStartDate]) {
-          this.appointmentsByWeek[weekStartDate] = [];
-        }
-        this.appointmentsByWeek[weekStartDate].push(appointment);
-      }
-    },
-  },
-  mounted() {
-    this.groupAppointmentsByDay();
-    this.groupAppointmentsByWeek();
-  },
 };
 </script>
+
 
 <style>
 
