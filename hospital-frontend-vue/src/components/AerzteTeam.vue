@@ -41,8 +41,9 @@ export default {
         }
 
         const updateDoctor = async () => {
-            const response = await DoctorService.updateDoctor(1, 
+            const response = await DoctorService.updateDoctor( 
                 JSON.stringify({
+                    id: 1,
                     firstName: 'Ich bin',
                     lastName: 'geupdated', 
                     gender: 'Female',
