@@ -14,6 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/doctor")
+@CrossOrigin("http://localhost:8080")
+
 public class DoctorController {
 
     private final DoctorService doctorService;

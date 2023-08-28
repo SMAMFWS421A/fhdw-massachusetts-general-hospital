@@ -1,4 +1,7 @@
 import dummyDataTerminPlan from '@/assets/dummyDataTerminPlan.json';
+/*import AppointmentService from '@/services/AppointmentService';
+import DoctorService from '@/services/DoctorService';
+import PatientService from '@/services/PatientService';*/
 
 function getWeekStartDate(date) {
     const d = new Date(date);
@@ -11,6 +14,9 @@ const TerminPlanModel = {
     appointments: dummyDataTerminPlan.appointments,
     doctors: dummyDataTerminPlan.doctors,
     patients: dummyDataTerminPlan.patients,
+    /*appointments: AppointmentService.getAppointments(),
+    doctors: DoctorService.getDoctors(),
+    patients: PatientService.getPatients(),*/
     getDoctorName(doctorId) {
         const doctor = this.doctors.find(doctor => doctor.id === doctorId);
         return doctor ? doctor.name : 'Unbekannter Arzt';
