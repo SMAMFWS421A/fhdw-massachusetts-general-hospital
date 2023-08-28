@@ -59,12 +59,12 @@ public class DoctorController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path= "{doctor_id}")
-    @ApiResponse(responseCode = "200", description = "Update Doctor",
+    @PutMapping()
+    @ApiResponse(responseCode = "200", description = "Updated Doctor",
             content = @Content(schema = @Schema(implementation = Doctor.class)))
     public ResponseEntity<Doctor> updateDoctor(@RequestBody Doctor doctor) {
         Doctor docDb = doctorService.updateDoctor(doctor);
-        if (docDb == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (docDb == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(docDb, HttpStatus.OK);
     }
 }

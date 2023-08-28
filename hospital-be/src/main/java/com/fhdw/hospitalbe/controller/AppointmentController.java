@@ -59,7 +59,7 @@ public class AppointmentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path = "{appointment_id}") //TODO
+    @PutMapping()
     @ApiResponse(responseCode = "200", description = "Updated Appointment",
             content = @Content(schema = @Schema(implementation = Appointment.class)))
     public ResponseEntity<Appointment> updateAppointment(@RequestBody Appointment appointment) {
