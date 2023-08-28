@@ -67,8 +67,8 @@ public class VisitController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path= "{visit_id}")
-    @ApiResponse(responseCode = "200", description = "Update Visit",
+    @PutMapping()
+    @ApiResponse(responseCode = "200", description = "Updated Visit",
             content = @Content(schema = @Schema(implementation = Visit.class)))
     public ResponseEntity<Visit> updateVisit(@RequestBody Visit visit) {
         Visit visDb = visitService.updateVisit(visit);
