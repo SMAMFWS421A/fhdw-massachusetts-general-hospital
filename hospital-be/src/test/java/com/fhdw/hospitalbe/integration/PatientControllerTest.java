@@ -145,9 +145,9 @@ public class PatientControllerTest {
         mockMvc.perform(delete("/api/v1/patient/" + d.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
-
-        Assertions.assertEquals(0, patientRepository.findAll().size());
+                .andExpect(status().isNoContent())
+                .andDo(result -> {
+                    Assertions.assertEquals(0, patientRepository.findAll().size());
+                });
     }
-
 }
