@@ -1,5 +1,6 @@
 package com.fhdw.hospitalbe.integration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fhdw.hospitalbe.DatabaseTestUtil;
 import com.fhdw.hospitalbe.model.Patient;
@@ -20,9 +21,10 @@ import org.springframework.data.domain.Example;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static com.fhdw.hospitalbe.DatabaseTestUtil.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -62,8 +64,26 @@ public class PatientControllerTest {
     }
 
     @Test
+    public void getAllPatientsTest() throws Exception {
+        databaseTestUtil.createPatientWithRecord();
+        databaseTestUtil.createPatientWithRecord();
+
+        mockMvc.perform(get("/api/v1/patient")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    List<Patient> patientResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Patient>>() {
+                    });
+                    Assertions.assertEquals(2, patientResponse.size());
+                    Assertions.assertNotNull(patientResponse.get(0).getId());
+                    Assertions.assertNotNull(patientResponse.get(1).getId());
+                });
+    }
+
+    @Test
     public void createPatientTest() throws Exception {
-        Patient patient= new PatientBuilder().firstName("First").lastName("Last").build();
+        Patient patient = new PatientBuilder().firstName("First").lastName("Last").build();
 
         mockMvc.perform(post("/api/v1/patient")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -79,6 +99,28 @@ public class PatientControllerTest {
         PatientTable patientDb = patientRepository.findOne(Example.of(PatientMapper.toTable(patient))).get();
         Assertions.assertEquals(patient.getLastName(), patientDb.getLastName());
         Assertions.assertNotNull(patientDb.getId());
+    }
+
+    @Test
+    public void updatePatientTest() throws Exception {
+        Patient patient = PatientMapper.fromTable(databaseTestUtil.createPatientWithRecord());
+
+        patient.setLastName("New Last Name");
+
+        mockMvc.perform(put("/api/v1/patient")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(patient))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    Patient patientResponse = objectMapper.readValue(result.getResponse().getContentAsString(), Patient.class);
+                    Assertions.assertEquals(patient.getLastName(), patientResponse.getLastName());
+                    Assertions.assertEquals(patient.getId(),patientResponse.getId());
+                });
+
+        PatientTable patientDb = patientRepository.findOne(Example.of(PatientMapper.toTable(patient))).get();
+        Assertions.assertEquals(patient.getLastName(), patientDb.getLastName());
+        Assertions.assertEquals(patient.getId(),patientDb.getId());
     }
 
     @Test

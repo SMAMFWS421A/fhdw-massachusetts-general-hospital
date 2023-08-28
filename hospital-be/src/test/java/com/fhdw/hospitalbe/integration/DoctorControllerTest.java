@@ -1,9 +1,11 @@
 package com.fhdw.hospitalbe.integration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fhdw.hospitalbe.DatabaseTestUtil;
-import com.fhdw.hospitalbe.model.*;
+import com.fhdw.hospitalbe.model.Doctor;
 import com.fhdw.hospitalbe.model.builder.DoctorBuilder;
+import com.fhdw.hospitalbe.model.enums.Position;
 import com.fhdw.hospitalbe.model.mapper.DoctorMapper;
 import com.fhdw.hospitalbe.repository.DoctorRepository;
 import com.fhdw.hospitalbe.repository.table.AppointmentTable;
@@ -19,6 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static com.fhdw.hospitalbe.DatabaseTestUtil.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -61,6 +65,24 @@ public class DoctorControllerTest {
                 });
     }
 
+    @Test
+    public void getAllDoctorsTest() throws Exception {
+        databaseTestUtil.createDoctor();
+        databaseTestUtil.createDoctor();
+
+        mockMvc.perform(get("/api/v1/doctor")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    List<Doctor> doctorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Doctor>>() {
+                    });
+                    Assertions.assertEquals(2, doctorResponse.size());
+                    Assertions.assertNotNull(doctorResponse.get(0).getId());
+                    Assertions.assertNotNull(doctorResponse.get(1).getId());
+                });
+    }
+
 
     @Test
     public void createDoctorTest() throws Exception {
@@ -83,7 +105,28 @@ public class DoctorControllerTest {
     }
 
     @Test
-    public void deleteDoctorTest() throws Exception{
+    public void updateDoctorTest() throws Exception {
+        Doctor doctor = DoctorMapper.fromTable(databaseTestUtil.createDoctor());
+        doctor.setPosition(Position.CHIEF_DOCTOR);
+
+        mockMvc.perform(put("/api/v1/doctor")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(doctor))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    Doctor doctorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), Doctor.class);
+                    Assertions.assertEquals(doctor.getPosition(), doctorResponse.getPosition());
+                    Assertions.assertEquals(doctor.getId(), doctorResponse.getId());
+                });
+
+        DoctorTable doctorDb = doctorRepository.findOne(Example.of(DoctorMapper.toTable(doctor))).get();
+        Assertions.assertEquals(doctor.getPosition(), doctorDb.getPosition());
+        Assertions.assertEquals(doctor.getId(), doctorDb.getId());
+    }
+
+    @Test
+    public void deleteDoctorTest() throws Exception {
         Doctor doctor = DoctorMapper.fromTable(databaseTestUtil.createDoctor());
 
         mockMvc.perform(delete("/api/v1/doctor/" + doctor.getId())
