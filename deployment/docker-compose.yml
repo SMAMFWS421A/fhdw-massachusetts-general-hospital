@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=d1skfjeDSskfhF73dD4Ls586Dkj27s
+      - MYSQL_DATABASE=hospital_db
+    volumes:
+      - mysqldb:/var/lib/mysql
+    networks:
+      - hospital-network
+  backend:
+    image: hospital-be:latest
+    environment:
+      - DATABASE_URL=jdbc:mysql://mysqldb:3306/hospital_db
+    depends_on:
+      - mysqldb
+    build: ../hospital-be
+    restart: on-failure
+    networks:
+      - hospital-network
+    ports:
+      - "8080:8080"
+  frontend:
+    image: hospital-fe:latest
+    build: ../hospital-frontend-vue
+    restart: on-failure
+    networks:
+      - hospital-network
+    ports:
+        - "80:8080"
+
+
+volumes:
+  mysqldb:
+
+networks:
+  hospital-network:
