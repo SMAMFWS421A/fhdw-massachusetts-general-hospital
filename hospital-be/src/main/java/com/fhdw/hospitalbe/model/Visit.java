@@ -37,14 +37,4 @@ public class Visit {
         this.diagnosis = builder.getDiagnosis();
         this.planOfActions = builder.getPlanOfActions();
     }
-
-    public static Visit createVisitFromAppointment(Appointment appointment) {
-        if (appointment == null) {
-            return null;
-        }
-        Visit visit = new VisitBuilder().patientRecord(appointment.getPatientRecord())
-                .doctor(appointment.getDoctor()).appeal(appointment.getAppeal()).plannedTime(appointment.getVisitingTime())
-                .arrivedTime(LocalDateTime.now()).build();
-        return visit;
-    }
 }

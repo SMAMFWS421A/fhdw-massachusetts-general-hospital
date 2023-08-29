@@ -28,7 +28,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.fhdw.hospitalbe.DatabaseTestUtil.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -125,29 +124,6 @@ public class VisitControllerTest {
         Assertions.assertNotNull(visitTable.getId());
     }
 
-    @Test
-    public void createVisitFromAppointmentTest() throws Exception {
-        DoctorTable d = databaseTestUtil.createDoctor();
-        PatientTable prt = databaseTestUtil.createPatientWithRecord();
-        Appointment appointment = AppointmentMapper.fromTable(databaseTestUtil.createAppointment(d, prt.getPatientRecord()));
-
-        mockMvc.perform(get("/api/v1/visit/register-from-appointment/" + appointment.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(result -> {
-                    Visit visitResponse = objectMapper.readValue(result.getResponse().getContentAsString(), Visit.class);
-                    Assertions.assertEquals(appointment.getAppeal(), visitResponse.getAppeal());
-                    Assertions.assertNotNull(visitResponse.getId());
-                });
-
-        VisitTable visitTable = visitRepository.findAll().get(0);
-        Assertions.assertEquals(visitTable.getAppeal(), appointment.getAppeal());
-        Assertions.assertEquals(visitTable.getDoctor().getId(), appointment.getDoctor().getId());
-        Assertions.assertNotNull(visitTable.getId());
-        Assertions.assertEquals(0, appointmentRepository.findAll().size());
-
-    }
 
     @Test
     public void updateVisitTest() throws Exception {
