@@ -12,4 +12,11 @@ Backend:
 | [LazyLoading](https://de.wikipedia.org/wiki/Lazy_Loading)                    |                                                        |
 | [Singleton](https://de.wikipedia.org/wiki/Singleton_(Entwurfsmuster))        | Durch Spring Boot für Dependency Injection             |
 | [Dependency Injection](https://de.wikipedia.org/wiki/Dependency_Injection)   | Durch Spring Boot                                      |
-| [MVC](https://de.wikipedia.org/wiki/Model_View_Controller)                   | Eingeschränkt, da wir keine View im Backend entwickeln |
+
+
+Frontend:
+
+| Design Pattern                                                                                     | Bemerkung                                              | 
+|----------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| [Component-Based Architecture](https://en.wikipedia.org/wiki/Component-based_software_engineering) |                                                        |
+| [MVVM (Model-View-ViewModel)](https://de.wikipedia.org/wiki/Model_View_ViewModel)                  | erzielt durch die Aufteilung der Termin Plan Seite     |
