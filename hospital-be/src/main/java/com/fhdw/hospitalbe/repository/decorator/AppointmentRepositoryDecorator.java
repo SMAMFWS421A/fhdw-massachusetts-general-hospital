@@ -1,20 +1,25 @@
-package com.fhdw.hospitalbe.service;
+package com.fhdw.hospitalbe.repository.decorator;
 
 import com.fhdw.hospitalbe.model.Appointment;
+import com.fhdw.hospitalbe.model.Visit;
 import com.fhdw.hospitalbe.model.mapper.AppointmentMapper;
 import com.fhdw.hospitalbe.repository.AppointmentRepository;
 import com.fhdw.hospitalbe.repository.table.AppointmentTable;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AppointmentService {
+public class AppointmentRepositoryDecorator {
 
   private final AppointmentRepository repository;
+  private final VisitRepositoryDecorator visitRepositoryDecorator;
 
-  public AppointmentService(AppointmentRepository repository) {
+
+  public AppointmentRepositoryDecorator(AppointmentRepository repository, VisitRepositoryDecorator visitRepositoryDecorator) {
     this.repository = repository;
+    this.visitRepositoryDecorator = visitRepositoryDecorator;
   }
 
   public List<Appointment> findAllAppointments() {
@@ -32,7 +37,7 @@ public class AppointmentService {
     return AppointmentMapper.fromTable(appointmentTable);
   }
 
-  public Appointment arrangeAppointment(Appointment appointment) {
+  public Appointment saveAppointment(Appointment appointment) {
     if (appointment == null) {
       return null;
     }
@@ -40,7 +45,16 @@ public class AppointmentService {
     return AppointmentMapper.fromTable(appointmentTable);
   }
 
-  public void cancelAppointment(Long id) {
+  @Transactional
+  public Visit saveVisitForAppointment(Appointment appointment, Visit visit) {
+    if (appointment == null || visit == null) {
+      return null;
+    }
+    this.deleteAppointment(appointment.getId());
+    return visitRepositoryDecorator.saveVisit(visit);
+  }
+
+  public void deleteAppointment(Long id) {
     if (id != null && this.repository.existsById(id)) this.repository.deleteById(id);
   }
 
@@ -51,4 +65,5 @@ public class AppointmentService {
     AppointmentTable appointmentTable = this.repository.save(AppointmentMapper.toTable(appointment));
     return AppointmentMapper.fromTable(appointmentTable);
   }
+
 }

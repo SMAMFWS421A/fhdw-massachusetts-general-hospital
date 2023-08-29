@@ -1,23 +1,20 @@
-package com.fhdw.hospitalbe.service;
+package com.fhdw.hospitalbe.repository.decorator;
 
 import com.fhdw.hospitalbe.model.Visit;
 import com.fhdw.hospitalbe.model.mapper.VisitMapper;
 import com.fhdw.hospitalbe.repository.VisitRepository;
 import com.fhdw.hospitalbe.repository.table.VisitTable;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class VisitService {
+public class VisitRepositoryDecorator {
 
     private final VisitRepository repository;
-    private final AppointmentService appointmentService;
 
-    public VisitService(VisitRepository repository, AppointmentService appointmentService) {
+    public VisitRepositoryDecorator(VisitRepository repository) {
         this.repository = repository;
-        this.appointmentService = appointmentService;
     }
 
     public List<Visit> findAllVisits() {
@@ -34,7 +31,7 @@ public class VisitService {
         return VisitMapper.fromTable(visitTable);
     }
 
-    public Visit registerVisit(Visit visit) {
+    public Visit saveVisit(Visit visit) {
         if (visit == null) {
             return null;
         }
@@ -42,16 +39,8 @@ public class VisitService {
         return VisitMapper.fromTable(visitTable);
     }
 
-    @Transactional
-    public Visit registerVisitFromAppointment(long appointment_id) {
-        Visit visit = Visit.createVisitFromAppointment(appointmentService.findAppointment(appointment_id));
-        if(visit == null) return null;
-        appointmentService.cancelAppointment(appointment_id);
-        return this.registerVisit(visit);
-    }
 
-
-    public void cancelVisit(Long id) {
+    public void deleteVisit(Long id) {
         if (id != null && this.repository.existsById(id)) {
             this.repository.deleteById(id);
         }

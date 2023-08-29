@@ -1,6 +1,7 @@
 package com.fhdw.hospitalbe.model;
 
 import com.fhdw.hospitalbe.model.builder.AppointmentBuilder;
+import com.fhdw.hospitalbe.model.builder.VisitBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,12 @@ public class Appointment {
         this.doctor = builder.getDoctor();
         this.visitingTime = builder.getVisitingTime();
         this.appeal = builder.getAppeal();
+    }
+
+
+    public Visit convertToVisit(LocalDateTime visitingTime) {
+        return new VisitBuilder().patientRecord(this.getPatientRecord())
+                .doctor(this.getDoctor()).appeal(this.getAppeal()).plannedTime(this.getVisitingTime())
+                .arrivedTime(visitingTime).build();
     }
 }

@@ -5,14 +5,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fhdw.hospitalbe.DatabaseTestUtil;
 import com.fhdw.hospitalbe.model.Appointment;
+import com.fhdw.hospitalbe.model.Visit;
 import com.fhdw.hospitalbe.model.builder.AppointmentBuilder;
 import com.fhdw.hospitalbe.model.mapper.AppointmentMapper;
 import com.fhdw.hospitalbe.model.mapper.DoctorMapper;
 import com.fhdw.hospitalbe.model.mapper.PatientRecordMapper;
 import com.fhdw.hospitalbe.repository.AppointmentRepository;
+import com.fhdw.hospitalbe.repository.VisitRepository;
 import com.fhdw.hospitalbe.repository.table.AppointmentTable;
 import com.fhdw.hospitalbe.repository.table.DoctorTable;
 import com.fhdw.hospitalbe.repository.table.PatientTable;
+import com.fhdw.hospitalbe.repository.table.VisitTable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,6 +45,9 @@ public class AppointmentControllerTest {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private VisitRepository visitRepository;
 
     @Autowired
     private DatabaseTestUtil databaseTestUtil;
@@ -116,6 +122,30 @@ public class AppointmentControllerTest {
         Assertions.assertEquals(appointmentTable.getAppeal(), appointment.getAppeal());
         Assertions.assertEquals(appointmentTable.getVisitingTime(), appointment.getVisitingTime());
         Assertions.assertNotNull(appointmentTable.getId());
+    }
+
+    @Test
+    public void createVisitFromAppointmentTest() throws Exception {
+        DoctorTable d = databaseTestUtil.createDoctor();
+        PatientTable prt = databaseTestUtil.createPatientWithRecord();
+        Appointment appointment = AppointmentMapper.fromTable(databaseTestUtil.createAppointment(d, prt.getPatientRecord()));
+
+        mockMvc.perform(get("/api/v1/appointment/"+appointment.getId()+"/to-visit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(result -> {
+                    Visit visitResponse = objectMapper.readValue(result.getResponse().getContentAsString(), Visit.class);
+                    Assertions.assertEquals(appointment.getAppeal(), visitResponse.getAppeal());
+                    Assertions.assertNotNull(visitResponse.getId());
+                });
+
+        VisitTable visitTable = visitRepository.findAll().get(0);
+        Assertions.assertEquals(visitTable.getAppeal(), appointment.getAppeal());
+        Assertions.assertEquals(visitTable.getDoctor().getId(), appointment.getDoctor().getId());
+        Assertions.assertNotNull(visitTable.getId());
+        Assertions.assertEquals(0, appointmentRepository.findAll().size());
+
     }
 
     @Test

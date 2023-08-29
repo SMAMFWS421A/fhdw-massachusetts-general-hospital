@@ -1,4 +1,4 @@
-package com.fhdw.hospitalbe.service;
+package com.fhdw.hospitalbe.repository.decorator;
 
 import com.fhdw.hospitalbe.model.Patient;
 import com.fhdw.hospitalbe.model.mapper.PatientMapper;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PatientService {
+public class PatientRepositoryDecorator {
 
     private final PatientRepository repository;
 
-    public PatientService(PatientRepository repository) {
+    public PatientRepositoryDecorator(PatientRepository repository) {
         this.repository = repository;
     }
 
@@ -32,7 +32,7 @@ public class PatientService {
         return PatientMapper.fromTable(patientTable);
     }
 
-    public Patient receivePatient(Patient patient) {
+    public Patient savePatient(Patient patient) {
         if (patient == null) {
             return null;
         }
