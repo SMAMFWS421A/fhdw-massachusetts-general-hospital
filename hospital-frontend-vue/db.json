@@ -1,0 +1,33 @@
+{
+  "doctor": [
+    {
+      "firstName": "Niklas",
+      "lastName": "",
+      "gender": "",
+      "position": "",
+      "area": "",
+      "id": "1"
+    },
+    {
+      "id": "4",
+      "firstName": "fds",
+      "lastName": "sdf",
+      "gender": "male",
+      "position": "GENERAL",
+      "area": "SPECIALIST"
+    }
+  ],
+  "patient":[
+    {
+      "id": "1",
+    "firstName": "Niklas",
+      "lastName": "",
+      "gender": "",
+      "birthday": "",
+      "isPrivate": "",
+      "phoneNumber": null,
+      "city": "",
+      "patientRecord": ""
+    }
+  ]
+}

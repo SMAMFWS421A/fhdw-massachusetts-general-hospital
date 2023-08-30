@@ -1,0 +1,24 @@
+[ 
+    {
+        "id": 1,
+        "firstName": "Steven",
+        "lastName": "Giurad", 
+        "gender": "Male",
+        "position": "ASSISTANT_DOCTOR",
+        "area": "GENERAL"},
+
+        {"id": 2,
+        "firstName": "Mike",
+        "lastName": "Löffel", 
+        "gender": "Male",
+        "position": "ASSISTANT_DOCTOR",
+        "area": "GENERAL"},
+
+        {"id": 3,
+        "firstName": "Patrick",
+        "lastName": "Strauch", 
+        "gender": "Male",
+        "position": "ASSISTANT_DOCTOR",
+        "area": "GENERAL"}
+
+    ]
