@@ -1,12 +1,10 @@
-
 <template>
     <header class="header">
         <h1>Patientenliste</h1>
     </header>
-
     <body class="body">
         <br />
-        <div class="btnSection">
+        <div class="btnSection" v-once>
             <br />
             <div v-if="openForumlar">
                 <form>
@@ -31,15 +29,15 @@
                         <p>Stadt: <input type="text" id="city" name="city" v-model="newPatient.city"></p>
                         <p>Patientenakte: <input type="text" id="patientRecord" name="patientRecord" v-model="newPatient.patientRecord"></p>
                     </fieldset>
-                    <button @click="postApi()">Doktor Erstellen</button><button
-                        v-on:click="updateApi(newPatient.id, newPatient.firstName, newPatient.lastName, newPatient.gender, newPatient.position, newPatient.area)">Doktor
+                    <button @click="postApi()">Patient Erstellen</button><button
+                        v-on:click="updateApi(newPatient.id, newPatient.firstName, newPatient.lastName, newPatient.gender, newPatient.birthday, newPatient.isPrivate, newPatient.phoneNumber, newPatient.city, newPatient.patientRecord)">Patient
                         Updaten</button>
                     <br>
                 </form>
             </div>
         </div>
         <br />
-        <h2>Mitarbeiterliste</h2>
+        <h2>Patientenliste</h2>
         <input type="text" @input="handleInput" placeholder="Mitarbeiter Suchen">{{ search }}
         <table>
             <tr>
@@ -105,6 +103,10 @@ export default {
             console.log(val.target.value);
             this.debounce = setTimeout(() => {
                 this.search = val.target.value;
+                if (this.search.trim().length > 0) {
+                    return this.patients.filter((patient) => patient.firstName.toLowerCase().includes(this.search.trim().toLowerCase()))
+                }
+                return this.patients;
             }, 1000);
         },
 
@@ -115,14 +117,13 @@ export default {
         async postApi() {
             await axios.post(baseUrl, {
                id: this.newPatient.id , firstName: this.newPatient.firstName, lastName: this.newPatient.lastName, gender: this.newPatient.gender, birthday: this.newPatient.birthday, isPrivate: this.newPatient.isPrivate, phoneNumber: this.newPatient.phoneNumber, city: this.newPatient.city, patientRecord: this.newPatient.patientRecord 
-            }).then((respon) => { console.log(respon); this.getApi(); })
+            }).then((respon) => { console.log(respon); this.getApi();}).catch((err) => {console.log(err)});
         },
         async deleteApi(id) {
-            await axios.delete(baseUrl + id).then((respon) => { console.log(respon); this.getApi(); })
+            await axios.delete(baseUrl + id).then((respon) => { console.log(respon); this.getApi();}).catch((err) => {console.log(err)});
         },
-        async updateApi(id, firstName, lastName, gender, position, area) {
-            console.log("hallo ich bin da")
-            await axios.put(baseUrl + id, { firstName: firstName, lastName: lastName, gender: gender, position: position, area: area }).then((respon) => { console.log(respon); this.getApi(); })
+        async updateApi(id, firstName, lastName, gender, birthday, isPrivate, phoneNumber, city, patientRecord) {
+            await axios.put(baseUrl + id, { firstName: firstName, lastName: lastName, gender: gender, birthday:birthday, isPrivate:isPrivate, phoneNumber:phoneNumber, city:city, patientRecord:patientRecord }).then((respon) => { console.log(respon); this.getApi(); }).catch((err) => {console.log(err)});
         },
 
     },
@@ -130,15 +131,7 @@ export default {
     mounted() {
         this.getApi();
     },
-
-    computed: {
-        filterpatienttor() {
-            if (this.search.trim().length > 0) {
-                return this.dummyData.filter((patienttor) => patienttor.firstName.toLowerCase().includes(this.search.trim().toLowerCase()))
-            }
-            return this.dummyData
-        }
-    },
+    
 }
 </script>
 
@@ -160,5 +153,4 @@ export default {
     text-align: center;
 }
 
-.searchList {}
 </style>
