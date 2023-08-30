@@ -30,7 +30,7 @@ services:
     networks:
       - hospital-network
     ports:
-        - "8080:8080"
+        - "8080:80"
 
 
 volumes:
