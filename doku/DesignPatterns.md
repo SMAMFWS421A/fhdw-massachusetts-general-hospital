@@ -9,9 +9,11 @@ Backend:
 | [Builder](https://de.wikipedia.org/wiki/Erbauer_(Entwurfsmuster))            |                                                        |
 | [DTO](https://de.wikipedia.org/wiki/Transferobjekt)                          |                                                        |
 | [Repository](https://de.wikipedia.org/wiki/Repository_(Entwurfsmuster))      |                                                        |
+| [Decorator](https://refactoring.guru/design-patterns/decorator)              |                                                        |
 | [LazyLoading](https://de.wikipedia.org/wiki/Lazy_Loading)                    |                                                        |
 | [Singleton](https://de.wikipedia.org/wiki/Singleton_(Entwurfsmuster))        | Durch Spring Boot für Dependency Injection             |
 | [Dependency Injection](https://de.wikipedia.org/wiki/Dependency_Injection)   | Durch Spring Boot                                      |
+
 
 
 Frontend:
